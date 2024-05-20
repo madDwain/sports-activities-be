@@ -1,5 +1,14 @@
 module.exports = [
   {
+    username: 'dodgeball_queen',
+    first_name: 'Sarah',
+    last_name: 'Bloggs',
+    avatar_url:
+      'https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg',
+    age: 49,
+    interests:['dodgeball', 'basketball']
+  },
+  {
     username: 'dodgeball_king',
     first_name: 'Joe',
     last_name: 'Bloggs',
