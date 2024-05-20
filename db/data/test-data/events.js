@@ -8,6 +8,7 @@ module.exports = [
     age_range: "18+",
     price: 6,
     capacity: 12,
+    skill_level: 'intermediate'
   },
   {
     event_name: "The wicked dodgeball match",
@@ -18,6 +19,7 @@ module.exports = [
     age_range: "16-18",
     price: 10,
     capacity: 18,
+    skill_level: 'all'
   },
   {
     event_name: "Championship Final UEFA",
@@ -28,5 +30,6 @@ module.exports = [
     age_range: "21+",
     price: 4,
     capacity: 22,
+    skill_level: 'expert'
   },
 ];
