@@ -5,7 +5,7 @@ const seed = ({ userData }) => {
   return db
     .query(`DROP TABLE IF EXISTS users;`)
     .then(() => {
-      const usersTablePromise = db.query(`
+      return db.query(`
       CREATE TABLE users (
         username VARCHAR PRIMARY KEY,
         first_name VARCHAR NOT NULL,
@@ -15,7 +15,6 @@ const seed = ({ userData }) => {
         interests VARCHAR NOT NULL
       );`);
 
-      return Promise.all([usersTablePromise]);
     })
     .then(() => {
       const insertUsersQueryStr = format(
@@ -31,9 +30,8 @@ const seed = ({ userData }) => {
           ]
         )
       );
-      const usersPromise = db.query(insertUsersQueryStr);
+      return db.query(insertUsersQueryStr);
 
-      return Promise.all([usersPromise]);
     });
 };
 

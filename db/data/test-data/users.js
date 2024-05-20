@@ -6,7 +6,7 @@ module.exports = [
     avatar_url:
       'https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg',
     age: 49,
-    interests:['dodgeball', 'basketball']
+    interests:'I enjoy playing dodgeball and basketball'
   },
   {
     username: 'dodgeball_king',
@@ -15,7 +15,7 @@ module.exports = [
     avatar_url:
       'https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg',
     age: 12,
-    interests:['dodgeball', 'basketball']
+    interests:'I enjoy playing dodgeball and basketball'
   },
   {
     username: 'DaddyDwain',
@@ -23,7 +23,7 @@ module.exports = [
     last_name: 'Madolid',
     avatar_url: 'https://avatars2.githubusercontent.com/u/24604688?s=460&v=4',
     age: 22,
-    interests:['basketball', 'badminton']
+    interests:'I enjoy playing basketball and badminton'
   },
   {
     username: 'cronaldo',
@@ -31,7 +31,7 @@ module.exports = [
     last_name: 'Knobs',
     avatar_url: 'https://avatars2.githubusercontent.com/u/24394918?s=400&v=4',
     age: 36,
-    interests:['football']
+    interests:'I enjoy playing football'
   },
   {
     username: 'federer',
@@ -40,6 +40,6 @@ module.exports = [
     avatar_url:
       'https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png',
     age: 22,
-    interests:['badminton', 'tennis']
+    interests:'I enjoy playing badminton and tennis'
   }
 ];

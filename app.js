@@ -1,5 +1,5 @@
 const express = require("express");
-const cors = require('cors')
+const cors = require("cors");
 
 // const articleRoute = require("./routes/articles");
 // const commentRoute = require("./routes/comments");
@@ -9,6 +9,7 @@ const userRoute = require("./routes/users");
 const app = express();
 app.use(cors());
 
+app.use("/api/users", userRoute);
 // app.use((err, req, res, next) => {
 //   if (err.status && err.msg) {
 //     res.status(err.status).send(err);
