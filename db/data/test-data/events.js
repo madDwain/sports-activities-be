@@ -32,4 +32,15 @@ module.exports = [
     capacity: 22,
     skill_level: 'expert'
   },
+  {
+    event_name: "My epic badminton match",
+    host: "federer",
+    location: "London",
+    date: "9/9/24",
+    category: "badminton",
+    age_range: "21+",
+    price: 10,
+    capacity: 4,
+    skill_level: 'beginner'
+  },
 ];
