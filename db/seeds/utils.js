@@ -3,20 +3,19 @@ exports.convertTimestampToDate = ({ created_at, ...otherProperties }) => {
   return { created_at: new Date(created_at), ...otherProperties };
 };
 
-exports.createRef = (arr, key, value) => {
+exports.createRef = (arr, key) => {
   return arr.reduce((ref, element) => {
-    ref[element[key]] = element[value];
+    ref[element[key]] = element[key];
     return ref;
   }, {});
 };
 
-exports.formatComments = (comments, idLookup) => {
-  return comments.map(({ created_by, belongs_to, ...restOfComment }) => {
-    const article_id = idLookup[belongs_to];
+exports.formatEvents = (users, idLookup) => {
+  return users.map(({ created_by, username, ...restOfEvent }) => {
+    const host = idLookup[username];
     return {
-      article_id,
-      author: created_by,
-      ...this.convertTimestampToDate(restOfComment),
+      host,
+      ...restOfEvent
     };
   });
 };

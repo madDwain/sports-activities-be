@@ -92,7 +92,7 @@ describe("/api/users", () => {
         .send(newUser)
         .expect(400)
         .then(({ body }) => {
-          expect(body.msg).toBe("invalid user object");
+          expect(body.msg).toBe("invalid object passed");
         });
     });
     it("returns 201: created, if the object contains extra keys, ignoring them", () => {
@@ -120,8 +120,125 @@ describe("/api/users", () => {
             "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg"
           );
           expect(user.interests).toBe("Basketball, Table tennis");
-          expect(user.pets).toBe(undefined)
-          expect(user.favourite_song).toBe(undefined)
+          expect(user.pets).toBe(undefined);
+          expect(user.favourite_song).toBe(undefined);
+        });
+    });
+  });
+});
+
+describe("/api/events", () => {
+  describe("GET request", () => {
+    it("returns 200 and an array of objects, with the event details", () => {
+      return request(app)
+        .get("/api/events")
+        .expect(200)
+        .then(({ body }) => {
+          const { events } = body;
+          expect(Array.isArray(events)).toBe(true);
+          events.forEach((event) => {
+            expect(event).toHaveProperty("event_name");
+            expect(event).toHaveProperty("host");
+            expect(event).toHaveProperty("location");
+            expect(event).toHaveProperty("date");
+            expect(event).toHaveProperty("category");
+            expect(event).toHaveProperty("age_range");
+            expect(event).toHaveProperty("price");
+            expect(event).toHaveProperty("capacity");
+            expect(event).toHaveProperty("skill_level");
+          });
+        });
+    });
+  });
+  describe("POST request", () => {
+    it("accepts an object returns 201 and the new object", () => {
+      const newEvent = {
+        event_name: "My cool NEW basketball series",
+        host: "DaddyDwain",
+        location: "London",
+        date: "31/12/24",
+        category: "basketball",
+        age_range: "18+",
+        price: 6,
+        capacity: 12,
+        skill_level: "expert",
+      };
+      return request(app)
+        .post("/api/events")
+        .send(newEvent)
+        .expect(201)
+        .then(({ body }) => {
+          const event = body;
+          expect(event).toHaveProperty("event_name");
+          expect(event).toHaveProperty("host");
+          expect(event).toHaveProperty("location");
+          expect(event).toHaveProperty("date");
+          expect(event).toHaveProperty("category");
+          expect(event).toHaveProperty("age_range");
+          expect(event).toHaveProperty("price");
+          expect(event).toHaveProperty("capacity");
+          expect(event).toHaveProperty("skill_level");
+        });
+    });
+    it("returns 400: bad request if no object is passed", () => {
+      return request(app)
+        .post("/api/events")
+        .send()
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("invalid object passed");
+        });
+    });
+    it("returns 404 when the host is not an existing user", () => {
+      const newEvent = {
+        event_name: "My cool NEW basketball series",
+        host: "SomeoneElse",
+        location: "London",
+        date: "31/12/24",
+        category: "basketball",
+        age_range: "18+",
+        price: 6,
+        capacity: 12,
+        skill_level: "expert",
+      };
+      return request(app)
+        .post("/api/events")
+        .send(newEvent)
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("username not found");
+        });
+    });
+    it("accepts an object returns 201 and the new object, ignoring extra keys", () => {
+      const newEvent = {
+        event_name: "My cool NEW basketball series",
+        host: "DaddyDwain",
+        location: "London",
+        date: "31/12/24",
+        category: "basketball",
+        age_range: "18+",
+        price: 6,
+        capacity: 12,
+        skill_level: "expert",
+        pets: "dog",
+      };
+      return request(app)
+        .post("/api/events")
+        .send(newEvent)
+        .expect(201)
+        .then(({ body }) => {
+          const event = body;
+          const eventArray = Object.keys(event)
+          expect(event).toHaveProperty("event_name");
+          expect(event).toHaveProperty("host");
+          expect(event).toHaveProperty("location");
+          expect(event).toHaveProperty("date");
+          expect(event).toHaveProperty("category");
+          expect(event).toHaveProperty("age_range");
+          expect(event).toHaveProperty("price");
+          expect(event).toHaveProperty("capacity");
+          expect(event).toHaveProperty("skill_level");
+          expect(eventArray.length).toBe(9);
         });
     });
   });
