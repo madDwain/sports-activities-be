@@ -149,97 +149,150 @@ describe("/api/events", () => {
           });
         });
     });
-  });
-  describe("POST request", () => {
-    it("accepts an object returns 201 and the new object", () => {
-      const newEvent = {
-        event_name: "My cool NEW basketball series",
-        host: "DaddyDwain",
-        location: "London",
-        date: "31/12/24",
-        category: "basketball",
-        age_range: "18+",
-        price: 6,
-        capacity: 12,
-        skill_level: "expert",
-      };
+    it("returns an array sorted by price, default ascending", () => {
       return request(app)
-        .post("/api/events")
-        .send(newEvent)
-        .expect(201)
+        .get("/api/events?sort_by=price")
+        .expect(200)
         .then(({ body }) => {
-          const event = body;
-          expect(event).toHaveProperty("event_name");
-          expect(event).toHaveProperty("host");
-          expect(event).toHaveProperty("location");
-          expect(event).toHaveProperty("date");
-          expect(event).toHaveProperty("category");
-          expect(event).toHaveProperty("age_range");
-          expect(event).toHaveProperty("price");
-          expect(event).toHaveProperty("capacity");
-          expect(event).toHaveProperty("skill_level");
+          const { events } = body;
+          expect(events).toBeSortedBy("price", { ascending: true });
         });
     });
-    it("returns 400: bad request if no object is passed", () => {
+    it("returns an array sorted by date, default ascending", () => {
       return request(app)
-        .post("/api/events")
-        .send()
+        .get("/api/events?sort_by=date")
+        .expect(200)
+        .then(({ body }) => {
+          const { events } = body;
+          expect(events).toBeSortedBy("date", { ascending: true });
+        });
+    });
+    it("returns an array sorted by capacity, default ascending", () => {
+      return request(app)
+        .get("/api/events?sort_by=capacity")
+        .expect(200)
+        .then(({ body }) => {
+          const { events } = body;
+          expect(events).toBeSortedBy("capacity", { ascending: true });
+        });
+    });
+    it("returns an array sorted by date in descending order, when passed desc", () => {
+      return request(app)
+        .get("/api/events?sort_by=date&order_by=desc")
+        .expect(200)
+        .then(({ body }) => {
+          const { events } = body;
+          expect(events).toBeSortedBy("date", { descending: true });
+        });
+    });
+    it("returns 400 if sort_by is not valid", () => {
+      return request(app)
+        .get("/api/events?sort_by=notvalid")
         .expect(400)
         .then(({ body }) => {
-          expect(body.msg).toBe("invalid object passed");
+          expect(body.msg).toBe("invalid request")
         });
     });
-    it("returns 404 when the host is not an existing user", () => {
-      const newEvent = {
-        event_name: "My cool NEW basketball series",
-        host: "SomeoneElse",
-        location: "London",
-        date: "31/12/24",
-        category: "basketball",
-        age_range: "18+",
-        price: 6,
-        capacity: 12,
-        skill_level: "expert",
-      };
+    it("returns 400 if order_by is not valid", () => {
       return request(app)
-        .post("/api/events")
-        .send(newEvent)
-        .expect(404)
+        .get("/api/events?order_by=notvalid")
+        .expect(400)
         .then(({ body }) => {
-          expect(body.msg).toBe("username not found");
+          expect(body.msg).toBe("invalid request")
         });
     });
-    it("accepts an object returns 201 and the new object, ignoring extra keys", () => {
-      const newEvent = {
-        event_name: "My cool NEW basketball series",
-        host: "DaddyDwain",
-        location: "London",
-        date: "31/12/24",
-        category: "basketball",
-        age_range: "18+",
-        price: 6,
-        capacity: 12,
-        skill_level: "expert",
-        pets: "dog",
-      };
-      return request(app)
-        .post("/api/events")
-        .send(newEvent)
-        .expect(201)
-        .then(({ body }) => {
-          const event = body;
-          const eventArray = Object.keys(event)
-          expect(event).toHaveProperty("event_name");
-          expect(event).toHaveProperty("host");
-          expect(event).toHaveProperty("location");
-          expect(event).toHaveProperty("date");
-          expect(event).toHaveProperty("category");
-          expect(event).toHaveProperty("age_range");
-          expect(event).toHaveProperty("price");
-          expect(event).toHaveProperty("capacity");
-          expect(event).toHaveProperty("skill_level");
-          expect(eventArray.length).toBe(9);
-        });
-    });
+  });
+});
+
+describe("POST request", () => {
+  it("accepts an object returns 201 and the new object", () => {
+    const newEvent = {
+      event_name: "My cool NEW basketball series",
+      host: "DaddyDwain",
+      location: "London",
+      date: "31/12/24",
+      category: "basketball",
+      age_range: "18+",
+      price: 6,
+      capacity: 12,
+      skill_level: "expert",
+    };
+    return request(app)
+      .post("/api/events")
+      .send(newEvent)
+      .expect(201)
+      .then(({ body }) => {
+        const event = body;
+        expect(event).toHaveProperty("event_name");
+        expect(event).toHaveProperty("host");
+        expect(event).toHaveProperty("location");
+        expect(event).toHaveProperty("date");
+        expect(event).toHaveProperty("category");
+        expect(event).toHaveProperty("age_range");
+        expect(event).toHaveProperty("price");
+        expect(event).toHaveProperty("capacity");
+        expect(event).toHaveProperty("skill_level");
+      });
+  });
+  it("returns 400: bad request if no object is passed", () => {
+    return request(app)
+      .post("/api/events")
+      .send()
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("invalid object passed");
+      });
+  });
+  it("returns 404 when the host is not an existing user", () => {
+    const newEvent = {
+      event_name: "My cool NEW basketball series",
+      host: "SomeoneElse",
+      location: "London",
+      date: "31/12/24",
+      category: "basketball",
+      age_range: "18+",
+      price: 6,
+      capacity: 12,
+      skill_level: "expert",
+    };
+    return request(app)
+      .post("/api/events")
+      .send(newEvent)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("username not found");
+      });
+  });
+  it("accepts an object returns 201 and the new object, ignoring extra keys", () => {
+    const newEvent = {
+      event_name: "My cool NEW basketball series",
+      host: "DaddyDwain",
+      location: "London",
+      date: "31/12/24",
+      category: "basketball",
+      age_range: "18+",
+      price: 6,
+      capacity: 12,
+      skill_level: "expert",
+      pets: "dog",
+    };
+    return request(app)
+      .post("/api/events")
+      .send(newEvent)
+      .expect(201)
+      .then(({ body }) => {
+        const event = body;
+        const eventArray = Object.keys(event);
+        expect(event).toHaveProperty("event_name");
+        expect(event).toHaveProperty("host");
+        expect(event).toHaveProperty("location");
+        expect(event).toHaveProperty("date");
+        expect(event).toHaveProperty("category");
+        expect(event).toHaveProperty("age_range");
+        expect(event).toHaveProperty("price");
+        expect(event).toHaveProperty("capacity");
+        expect(event).toHaveProperty("skill_level");
+        expect(eventArray.length).toBe(9);
+      });
   });
 });

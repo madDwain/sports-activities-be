@@ -26,7 +26,7 @@ const seed = ({ userData, eventData }) => {
         event_name VARCHAR PRIMARY KEY,
         host VARCHAR NOT NULL REFERENCES users(username),
         location VARCHAR NOT NULL,
-        date VARCHAR NOT NULL,
+        date TIMESTAMP DEFAULT NOW(),
         category VARCHAR NOT NULL,
         age_range VARCHAR NOT NULL,
         price INT NOT NULL,
@@ -80,7 +80,7 @@ const seed = ({ userData, eventData }) => {
           ]
         )
       );
-      return db.query(insertEventsQuery)
+      return db.query(insertEventsQuery);
     });
 };
 
