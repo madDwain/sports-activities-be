@@ -15,7 +15,6 @@ function getAllEvents(req, res, next) {
     res.status(200).send({ events });
   })
   .catch((err) => {
-    console.log(err)
     next(err)
   })
 }
@@ -24,3 +23,4 @@ module.exports = {
   getAllUsers,
   getAllEvents
 };
+ 

@@ -190,7 +190,7 @@ describe("/api/events", () => {
         .get("/api/events?sort_by=notvalid")
         .expect(400)
         .then(({ body }) => {
-          expect(body.msg).toBe("invalid request")
+          expect(body.msg).toBe("invalid request");
         });
     });
     it("returns 400 if order_by is not valid", () => {
@@ -198,13 +198,13 @@ describe("/api/events", () => {
         .get("/api/events?order_by=notvalid")
         .expect(400)
         .then(({ body }) => {
-          expect(body.msg).toBe("invalid request")
+          expect(body.msg).toBe("invalid request");
         });
     });
   });
 });
 
-describe.only("POST request", () => {
+describe("POST request", () => {
   it("accepts an object returns 201 and the new object", () => {
     const newEvent = {
       event_name: "My cool NEW basketball series",
@@ -223,7 +223,6 @@ describe.only("POST request", () => {
       .expect(201)
       .then(({ body }) => {
         const event = body;
-        console.log(body)
         expect(event).toHaveProperty("event_name");
         expect(event).toHaveProperty("host");
         expect(event).toHaveProperty("location");
@@ -298,18 +297,16 @@ describe.only("POST request", () => {
   });
 });
 
-describe('/api/events', () => {
-  test('GET 200- should return events filtered by category', () => {
+describe("/api/events", () => {
+  test("GET 200- should return array of events filtered by category", () => {
     return request(app)
-    .get("/api/events?category=basketball")
-    .expect(200)
-    .then(({ body }) => {
-      const { events } = body;
-      events.forEach((event) => {
-        expect(event.category).toBe("basketball")
-      })
-    });
+      .get("/api/events?category=basketball")
+      .expect(200)
+      .then(({ body }) => {
+        const { events } = body;
+        events.forEach((event) => {
+          expect(event.category).toBe("basketball");
+        });
+      });
+  });
 });
-  })
-  
-

@@ -7,11 +7,16 @@ function fetchEvents(sortBy = "date", orderBy = "ASC", category) {
   if (!validSorts.includes(sortBy) || !validOrder.includes(orderBy)) {
     return Promise.reject({ status: 400, msg: "invalid request" });
   }
+
+  let sqlQuery = `SELECT * FROM events ` 
+  if (category) {
+    sqlQuery += `WHERE category='${category}' `
+  }
+  sqlQuery += `ORDER BY ${sortBy} ${orderBy};`
  
   return db
-    .query(`SELECT * FROM events WHERE category=$1 ORDER BY ${sortBy} ${orderBy}`, [category])
+    .query(sqlQuery)
     .then(({ rows }) => {
-      console.log(rows)
       return rows;
     });
 }
