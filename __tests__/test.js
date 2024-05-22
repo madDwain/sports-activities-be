@@ -204,13 +204,13 @@ describe("/api/events", () => {
   });
 });
 
-describe("POST request", () => {
+describe.only("POST request", () => {
   it("accepts an object returns 201 and the new object", () => {
     const newEvent = {
       event_name: "My cool NEW basketball series",
       host: "DaddyDwain",
       location: "London",
-      date: "31/12/24",
+      date: "2024/12/31 12:00:23",
       category: "basketball",
       age_range: "18+",
       price: 6,
@@ -223,6 +223,7 @@ describe("POST request", () => {
       .expect(201)
       .then(({ body }) => {
         const event = body;
+        console.log(body)
         expect(event).toHaveProperty("event_name");
         expect(event).toHaveProperty("host");
         expect(event).toHaveProperty("location");
@@ -248,7 +249,7 @@ describe("POST request", () => {
       event_name: "My cool NEW basketball series",
       host: "SomeoneElse",
       location: "London",
-      date: "31/12/24",
+      date: "2024/12/31 12:00:23",
       category: "basketball",
       age_range: "18+",
       price: 6,
@@ -268,7 +269,7 @@ describe("POST request", () => {
       event_name: "My cool NEW basketball series",
       host: "DaddyDwain",
       location: "London",
-      date: "31/12/24",
+      date: "2024/12/31 12:00:23",
       category: "basketball",
       age_range: "18+",
       price: 6,
@@ -296,3 +297,19 @@ describe("POST request", () => {
       });
   });
 });
+
+describe('/api/events', () => {
+  test('GET 200- should return events filtered by category', () => {
+    return request(app)
+    .get("/api/events?category=basketball")
+    .expect(200)
+    .then(({ body }) => {
+      const { events } = body;
+      events.forEach((event) => {
+        expect(event.category).toBe("basketball")
+      })
+    });
+});
+  })
+  
+

@@ -10,10 +10,12 @@ function getAllUsers(req, res, next) {
 function getAllEvents(req, res, next) {
   const {sort_by} = req.query
   const {order_by} = req.query
-  return fetchEvents(sort_by, order_by).then((events) => {
+  const {category} = req.query
+  return fetchEvents(sort_by, order_by, category).then((events) => {
     res.status(200).send({ events });
   })
   .catch((err) => {
+    console.log(err)
     next(err)
   })
 }

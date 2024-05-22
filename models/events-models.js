@@ -1,15 +1,17 @@
 const db = require("../db/connection");
 
-function fetchEvents(sortBy = "date", orderBy = "ASC") {
-  const validSorts = ["price", "capacity", "distance", "date"];
+function fetchEvents(sortBy = "date", orderBy = "ASC", category) {
+  const validSorts = ["price", "capacity", "distance", "date", "category"];
   const validOrder = ["asc", "desc", 'ASC', 'DESC'];
 
   if (!validSorts.includes(sortBy) || !validOrder.includes(orderBy)) {
     return Promise.reject({ status: 400, msg: "invalid request" });
   }
+ 
   return db
-    .query(`SELECT * FROM events ORDER BY ${sortBy} ${orderBy};`)
+    .query(`SELECT * FROM events WHERE category=$1 ORDER BY ${sortBy} ${orderBy}`, [category])
     .then(({ rows }) => {
+      console.log(rows)
       return rows;
     });
 }

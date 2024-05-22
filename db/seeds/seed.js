@@ -1,6 +1,6 @@
 const format = require("pg-format");
 const db = require("../connection");
-const { eventData } = require("../data/test-data");
+const { eventData, categoryData } = require("../data/test-data");
 const { formatEvents, createRef } = require("./utils");
 
 const seed = ({ userData, eventData }) => {
@@ -8,6 +8,9 @@ const seed = ({ userData, eventData }) => {
     .query(`DROP TABLE IF EXISTS events;`)
     .then(() => {
       return db.query(`DROP TABLE IF EXISTS users;`);
+    })
+    .then(() => {
+      return db.query(`DROP TABLE IF EXISTS categories`)
     })
     .then(() => {
       return db.query(`
@@ -22,18 +25,33 @@ const seed = ({ userData, eventData }) => {
     })
     .then(() => {
       return db.query(`
+      CREATE TABLE categories (
+        name VARCHAR PRIMARY KEY,
+        description VARCHAR
+      )`);
+    })
+    .then(() => {
+      const insertIntoCategStr = format(
+        "INSERT INTO categories (name, description) VALUES %L RETURNING *;",
+        categoryData.map(({ name, description }) => [name, description])
+      );
+      return db.query(insertIntoCategStr)
+    })
+    .then(() => {
+      return db.query(`
       CREATE TABLE events (
         event_name VARCHAR PRIMARY KEY,
         host VARCHAR NOT NULL REFERENCES users(username),
         location VARCHAR NOT NULL,
         date TIMESTAMP DEFAULT NOW(),
-        category VARCHAR NOT NULL,
+        category VARCHAR NOT NULL REFERENCES categories(name),
         age_range VARCHAR NOT NULL,
         price INT NOT NULL,
         capacity INT NOT NULL,
         skill_level VARCHAR NOT NULL
       );`);
     })
+  
     .then(() => {
       const insertUsersQueryStr = format(
         "INSERT INTO users ( username, first_name, last_name, age, avatar_url, interests) VALUES %L RETURNING *;",
