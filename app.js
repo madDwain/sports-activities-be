@@ -11,9 +11,9 @@ app.use(express.json())
 app.use("/api/users", userRoute);
 app.use("/api/events", eventRoute)
 app.use((err, req, res, next) => {
-//   if (err.status && err.msg) {
-//     res.status(err.status).send(err);
-//   }
+  if (err.status && err.msg) {
+    res.status(err.status).send(err);
+  }
   if (err.code === "23502") {
     res.status(400).send({ msg: "invalid object passed" });
   }
