@@ -17,7 +17,6 @@ function postEvent(req, res, next) {
       res.status(201).send(newEvent);
     })
     .catch((err) => {
-      console.log(err)
       next(err);
     });
 }
