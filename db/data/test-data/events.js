@@ -1,6 +1,7 @@
 module.exports = [
   {
     event_name: "My cool basketball scrimmage",
+    event_id: 1,
     host: "DaddyDwain",
     location: "London",
     date: "12/12/24 18:00",
@@ -12,6 +13,7 @@ module.exports = [
   },
   {
     event_name: "The wicked dodgeball match",
+    event_id: 2,
     host: "dodgeball_king",
     location: "London",
     date: "11/11/24 10:00",
@@ -23,6 +25,7 @@ module.exports = [
   },
   {
     event_name: "Championship Final UEFA",
+    event_id: 3,
     host: "cronaldo",
     location: "London",
     date: "10/10/24 20:00",
@@ -34,6 +37,7 @@ module.exports = [
   },
   {
     event_name: "My epic badminton match",
+    event_id: 4,
     host: "federer",
     location: "London",
     date: "11/11/24 12:00",
