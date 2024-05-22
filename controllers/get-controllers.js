@@ -1,4 +1,5 @@
 const { fetchUsers } = require("../models/users-models");
+const { fetchEvents } = require("../models/events-models")
 
 function getAllUsers(req, res, next) {
   return fetchUsers().then((users) => {
@@ -6,6 +7,13 @@ function getAllUsers(req, res, next) {
   });
 }
 
+function getAllEvents(req, res, next) {
+  return fetchEvents().then((events) => {
+    res.status(200).send({ events });
+  })
+}
+
 module.exports = {
   getAllUsers,
+  getAllEvents
 };
