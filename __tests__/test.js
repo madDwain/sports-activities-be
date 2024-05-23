@@ -311,7 +311,6 @@ describe("/api/events", () => {
   });
 });
 
-  })
 
 describe.only('/api/users', () => {
   test('PATCH: 200 - should return a patched user where the first name has been edited', () => {
