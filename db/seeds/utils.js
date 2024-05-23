@@ -25,7 +25,15 @@ exports.formatEvents = (users, idLookup) => {
 exports.checkCategoryExists = (category) => {
   return db.query(`SELECT name FROM categories WHERE name='${category}'`).then(({ rows }) =>{
     if (rows.length === 0) {
-      return false
+      return Promise.reject({ status: 404, msg: "Category not found" })
+    } else return true
+  })
+}
+
+exports.checkEventIDExists = (event_id) => {
+  return db.query(`SELECT event_id FROM events WHERE event_id='${event_id}'`).then(({ rows }) =>{
+    if (rows.length === 0) {
+      return Promise.reject({status:404, msg: 'event_id does not exist'})
     } else return true
   })
 }

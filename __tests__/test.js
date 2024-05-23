@@ -497,29 +497,29 @@ describe("/api/events/:event_id", () => {
           });
         });
     });
-    it("should return 404 and a message: article_id not found if article_id is not found", () => {
+    it("should return 404 and a message: event id not found if event id is not found", () => {
       return request(app)
         .get("/api/events/999999999")
         .expect(404)
         .then(({ body }) => {
-          expect(body.msg).toBe("article_id is not found");
+          expect(body.msg).toBe("event id is not found");
         });
     });
-    it("should return 404 and a message: invalid article_id input if invalid article_id input", () => {
+    it("should return 404 and a message: invalid event id input if invalid event id input", () => {
       return request(app)
         .get("/api/events/notgood")
         .expect(400)
         .then(({ body }) => {
-          expect(body.msg).toBe("invalid article_id input");
+          expect(body.msg).toBe("invalid event id input");
         });
     });
   });
 });
 
-describe('/api/users/:username', () => {
-  test('DELETE: 204 - should delete the given user by the username', () => {
-    return request(app).delete("/api/users/dodgeball_king").expect(204)
-  })
+describe("/api/users/:username", () => {
+  test("DELETE: 204 - should delete the given user by the username", () => {
+    return request(app).delete("/api/users/dodgeball_king").expect(204);
+  });
   test("DELETE: 404 - should return an error message when we attempt to delete a non-existent username", () => {
     return request(app)
       .delete("/api/users/not-a-user")
@@ -528,6 +528,55 @@ describe('/api/users/:username', () => {
         expect(body.msg).toBe("User not found");
       });
   });
+
+});
+
+describe("/api/events/:event_id/members", () => {
+  describe("GET request", () => {
+    test("returns 200 and an array of the usernames which are members of an event, pending or accepted", () => {
+      return request(app)
+        .get("/api/events/1/members")
+        .then(({ body }) => {
+          const members = body;
+          members.forEach((member) => {
+            expect(member.event_id).toBe(1);
+          });
+        });
+    });
+    test("returns 200 and an array of usernames which are accepted to an event, when queried", () => {
+      return request(app)
+        .get("/api/events/2/members?is_accepted=true")
+        .expect(200)
+        .then(({ body }) => {
+          const members = body;
+          members.forEach((member) => {
+            expect(member.event_id).toBe(2);
+            expect(member.is_accepted).toBe("true");
+          });
+        });
+    });
+    test("returns 200 and an array of usernames which are pwnding to an event, when queried", () => {
+      return request(app)
+        .get("/api/events/2/members?is_accepted=pending")
+        .expect(200)
+        .then(({ body }) => {
+          const members = body;
+          members.forEach((member) => {
+            expect(member.event_id).toBe(2);
+            expect(member.is_accepted).toBe("pending");
+          });
+        });
+    });
+    test("returns 404 and a message if event_id is not found", () => {
+      return request(app)
+        .get("/api/events/99999999/members")
+        .then(({ body }) => {
+          expect(body.msg).toBe("event_id does not exist");
+        });
+    });
+  });
+});
+
 })
 
 describe('/api/categories', () => {
@@ -557,3 +606,4 @@ describe('/api/categories', () => {
       })
   })
 })
+

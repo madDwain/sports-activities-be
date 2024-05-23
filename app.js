@@ -23,7 +23,7 @@ app.use((err, req, res, next) => {
     res.status(400).send({ msg: "invalid object passed" });
   }
   if (err.code === "22P02") {
-    res.status(400).send({ msg: "invalid article_id input" });
+    res.status(400).send({ msg: "invalid event id input" });
   }
   if (err.code === "23503") {
     res.status(404).send({ msg: "username not found" });

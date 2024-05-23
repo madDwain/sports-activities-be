@@ -1,5 +1,7 @@
 const { fetchUsers } = require("../models/users-models");
 const { fetchEvents, fetchEventByID } = require("../models/events-models");
+const { fetchMembersByEventID } = require("../models/members-models");
+const { checkEventIDExists } = require("../db/seeds/utils");
 
 function getAllUsers(req, res, next) {
   return fetchUsers().then((users) => {
@@ -33,8 +35,31 @@ function getEventByID(req, res, next) {
     });
 }
 
+function getEventMembers(req, res, next) {
+  const { is_accepted } = req.query;
+  const { event_id } = req.params;
+
+  if (event_id) {
+    checkEventIDExists(event_id)
+      .then((value) => {
+      })
+      .catch((err) => {
+        next(err);
+      });
+  }
+
+  return fetchMembersByEventID(event_id, is_accepted)
+    .then((members) => {
+      res.status(200).send(members);
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
+
 module.exports = {
   getAllUsers,
   getAllEvents,
   getEventByID,
+  getEventMembers,
 };
