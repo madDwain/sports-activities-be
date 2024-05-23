@@ -204,7 +204,7 @@ describe("/api/events", () => {
   });
 });
 
-describe.only("POST request", () => {
+describe("POST request", () => {
   it("accepts an object returns 201 and the new object", () => {
     const newEvent = {
       event_name: "My cool NEW basketball series",
@@ -311,5 +311,128 @@ describe('/api/events', () => {
     });
 });
   })
-  
+
+describe.only('/api/users', () => {
+  test('PATCH: 200 - should return a patched user where the first name has been edited', () => {
+    const user = {
+      first_name: "Lucy"
+    }
+    return request(app)
+    .patch("/api/users/dodgeball_queen")
+    .send(user)
+    .expect(200)
+    .then(({body}) => {
+      expect(body.user).toMatchObject({
+        username: "dodgeball_queen",
+        first_name: "Lucy",
+        last_name: "Bloggs",
+        age: 49,
+        avatar_url: "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg",
+        interests: "I enjoy playing dodgeball and basketball"
+      })
+    })
+  })
+  test('PATCH: 200 - should return a patched user where the last name has been edited', () => {
+    const user = {
+      last_name: "Jones"
+    }
+    return request(app)
+    .patch("/api/users/dodgeball_queen")
+    .send(user)
+    .expect(200)
+    .then(({body}) => {
+      expect(body.user).toMatchObject({
+        username: "dodgeball_queen",
+        first_name: "Sarah",
+        last_name: "Jones",
+        age: 49,
+        avatar_url: "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg",
+        interests: "I enjoy playing dodgeball and basketball"
+      })
+    })
+  })
+  test('PATCH: 200 - should return a patched user where the age has been edited', () => {
+    const user = {
+      age: 55
+    }
+    return request(app)
+    .patch("/api/users/dodgeball_queen")
+    .send(user)
+    .expect(200)
+    .then(({body}) => {
+      expect(body.user).toMatchObject({
+        username: "dodgeball_queen",
+        first_name: "Sarah",
+        last_name: "Bloggs",
+        age: 55,
+        avatar_url: "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg",
+        interests: "I enjoy playing dodgeball and basketball"
+      })
+    })
+  })
+  test('PATCH: 200 - should return a patched user where the avatar url has been edited', () => {
+    const user = {
+      avatar_url: "different_url"
+    }
+    return request(app)
+    .patch("/api/users/dodgeball_queen")
+    .send(user)
+    .expect(200)
+    .then(({body}) => {
+      expect(body.user).toMatchObject({
+        username: "dodgeball_queen",
+        first_name: "Sarah",
+        last_name: "Bloggs",
+        age: 49,
+        avatar_url: "different_url",
+        interests: "I enjoy playing dodgeball and basketball"
+      })
+    })
+  })
+  test('PATCH: 200 - should return a patched user where the interests have been edited', () => {
+    const user = {
+      interests: "I enjoy playing football"
+    }
+    return request(app)
+    .patch("/api/users/dodgeball_queen")
+    .send(user)
+    .expect(200)
+    .then(({body}) => {
+      expect(body.user).toMatchObject({
+        username: "dodgeball_queen",
+        first_name: "Sarah",
+        last_name: "Bloggs",
+        age: 49,
+        avatar_url: "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg",
+        interests: "I enjoy playing football"
+      })
+    })
+  })
+  test('PATCH: 404 - should return an error message when we patch a user that does not exist', () => {
+    const user = {
+      interests: "I enjoy playing football"
+    } 
+    return request(app)
+    .patch("/api/users/non-existent-user")
+    .send(user)
+    .expect(404)
+    .then(({body}) => {
+      expect(body.msg).toBe("Username not found")
+    })
+  })
+  test('PATCH: 400 - should return an error message when we patch by a property that does not exist', () => {
+    const user = {
+      pets: "dogs"
+    }
+    return request(app)
+    .patch("/api/users/dodgeball_queen")
+    .send(user)
+    .expect(400)
+    .then(({body}) => {
+      expect(body.msg).toBe("Non-existent property")
+    })
+  })
+})
+
+
 
