@@ -489,3 +489,31 @@ describe('/api/users/:username', () => {
       });
   });
 })
+
+describe('/api/categories', () => {
+  test('POST: 201 - should post a new category', () => {
+    const category = {name: "cricket", description: "hitting the ball with the bat"}
+    return request(app)
+    .post("/api/categories")
+    .send(category)
+    .expect(201)
+    .then(({body}) => {
+      expect(body).toMatchObject({
+        name: "cricket",
+        description: "hitting the ball with the bat"
+      })
+    })
+  })
+  test('POST: 400 - should return an error message when there is a missing required field in the body', () => {
+    const category = {
+      name: "cricket"
+    }
+    return request(app)
+    .post("/api/categories")
+    .send(category)
+    .expect(400)
+    .then(({body}) => {
+      expect(body.msg).toBe("Missing field")
+      })
+  })
+})
