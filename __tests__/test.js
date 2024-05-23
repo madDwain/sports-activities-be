@@ -515,3 +515,17 @@ describe("/api/events/:event_id", () => {
     });
   });
 });
+
+describe('/api/users/:username', () => {
+  test('DELETE: 204 - should delete the given user by the username', () => {
+    return request(app).delete("/api/users/dodgeball_king").expect(204)
+  })
+  test("DELETE: 404 - should return an error message when we attempt to delete a non-existent username", () => {
+    return request(app)
+      .delete("/api/users/not-a-user")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("User not found");
+      });
+  });
+})

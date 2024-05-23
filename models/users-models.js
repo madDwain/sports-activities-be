@@ -107,8 +107,19 @@ function patchUserData(
   }
 }
 
+function deleteUserData(username) {
+  return db.query("DELETE FROM events WHERE host=$1", [username]).then(() => {
+    return db.query("DELETE FROM users WHERE username=$1 RETURNING *", [username]).then((user) => {
+      if (user.rows.length === 0) {
+        return Promise.reject({status: 404, msg: "User not found"})
+      }
+    })
+  })
+}
+
 module.exports = {
   fetchUsers,
   insertUser,
   patchUserData,
+  deleteUserData
 };
