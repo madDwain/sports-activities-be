@@ -37,13 +37,12 @@ function fetchEvents(sortBy = "date", orderBy = "ASC", category, skill_level) {
 
   if (category) {
     return checkCategoryExists(category).then((value) => {
-      if (!value) {
-        return Promise.reject({ status: 404, msg: "Category not found" });
-      } else {
-        return db.query(sqlQuery).then(({ rows }) => {
-          return rows;
-        });
-      }
+      return db.query(sqlQuery).then(({ rows }) => {
+        return rows;
+      })
+      .catch((err) => {
+        next(err)
+      })
     });
   }
 
@@ -82,7 +81,7 @@ function fetchEventByID(event_id) {
     .query(`SELECT * FROM events WHERE event_id = $1;`, [event_id])
     .then(({ rows }) => {
       if (rows.length === 0) {
-        return Promise.reject({ status: 404, msg: "article_id is not found" });
+        return Promise.reject({ status: 404, msg: "event id is not found" });
       }
       return rows[0];
     });

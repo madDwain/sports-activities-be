@@ -4,7 +4,9 @@ function deleteUser(req, res, next) {
   const { username } = req.params;
   deleteUserData(username).then(() => {
     res.sendStatus(204);
-  }).catch(next)
+  }).catch((err) => {
+    next(err)
+  })
 }
 
 module.exports = { deleteUser };
