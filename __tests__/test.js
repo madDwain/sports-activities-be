@@ -201,6 +201,25 @@ describe("/api/events", () => {
           expect(body.msg).toBe("invalid request");
         });
     });
+    test("returns 200 should return array of events filtered by category", () => {
+      return request(app)
+        .get("/api/events?category=basketball")
+        .expect(200)
+        .then(({ body }) => {
+          const { events } = body;
+          events.forEach((event) => {
+            expect(event.category).toBe("basketball");
+          });
+        });
+    });
+    test("returns 404 when category is not found", () => {
+      return request(app)
+        .get("/api/events?category=notacategory")
+        .expect(404)
+        .then(( {body} ) => {
+          expect(body.msg).toBe('Not found')
+        });
+    });
   });
 });
 
@@ -292,23 +311,13 @@ describe("POST request", () => {
         expect(event).toHaveProperty("price");
         expect(event).toHaveProperty("capacity");
         expect(event).toHaveProperty("skill_level");
-        expect(eventArray.length).toBe(9);
+        expect(eventArray.length).toBe(10);
       });
   });
 });
 
 describe("/api/events", () => {
-  test("GET 200- should return array of events filtered by category", () => {
-    return request(app)
-      .get("/api/events?category=basketball")
-      .expect(200)
-      .then(({ body }) => {
-        const { events } = body;
-        events.forEach((event) => {
-          expect(event.category).toBe("basketball");
-        });
-      });
-  });
+  
 });
 
 
