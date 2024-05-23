@@ -40,7 +40,8 @@ const seed = ({ userData, eventData }) => {
     .then(() => {
       return db.query(`
       CREATE TABLE events (
-        event_name VARCHAR PRIMARY KEY,
+        event_name VARCHAR NOT NULL,
+        event_id INT PRIMARY KEY,
         host VARCHAR NOT NULL REFERENCES users(username),
         location VARCHAR NOT NULL,
         date TIMESTAMP DEFAULT NOW(),
@@ -73,10 +74,11 @@ const seed = ({ userData, eventData }) => {
       const formattedEventData = formatEvents(eventData, usernameLookup);
 
       const insertEventsQuery = format(
-        `INSERT INTO events (event_name, host, location, date, category, age_range, price, capacity, skill_level) VALUES %L;`,
+        `INSERT INTO events (event_name, event_id, host, location, date, category, age_range, price, capacity, skill_level) VALUES %L;`,
         formattedEventData.map(
           ({
             event_name,
+            event_id,
             host,
             location,
             date,
@@ -87,6 +89,7 @@ const seed = ({ userData, eventData }) => {
             skill_level,
           }) => [
             event_name,
+            event_id,
             host,
             location,
             date,

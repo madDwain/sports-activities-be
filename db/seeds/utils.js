@@ -1,3 +1,5 @@
+const db = require("../../db/connection")
+
 exports.convertTimestampToDate = ({ created_at, ...otherProperties }) => {
   if (!created_at) return { ...otherProperties };
   return { created_at: new Date(created_at), ...otherProperties };
@@ -20,3 +22,10 @@ exports.formatEvents = (users, idLookup) => {
   });
 };
 
+exports.checkCategoryExists = (category) => {
+  return db.query(`SELECT name FROM categories WHERE name='${category}'`).then(({ rows }) =>{
+    if (rows.length === 0) {
+      return false
+    } else return true
+  })
+}
