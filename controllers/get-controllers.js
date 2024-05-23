@@ -11,7 +11,9 @@ function getAllEvents(req, res, next) {
   const { sort_by } = req.query;
   const { order_by } = req.query;
   const { category } = req.query;
-  return fetchEvents(sort_by, order_by, category)
+  const {skill_level} = req.query
+
+  return fetchEvents(sort_by, order_by, category, skill_level)
     .then((events) => {
       res.status(200).send({ events });
     })

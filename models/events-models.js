@@ -1,24 +1,38 @@
 const db = require("../db/connection");
 const { checkCategoryExists } = require("../db/seeds/utils");
 
-function fetchEvents(sortBy = "date", orderBy = "ASC", category) {
-  const validSorts = ["price", "capacity", "distance", "date", "category"];
+function fetchEvents(sortBy = "date", orderBy = "ASC", category, skill_level) {
+  const validSorts = ["price", "capacity", "distance", "date", "category", "skill_level"];
   const validOrder = ["asc", "desc", "ASC", "DESC"];
-
+  const validSkillLevels = ["all", "beginner", "intermediate", "expert"]
   if (!validSorts.includes(sortBy) || !validOrder.includes(orderBy)) {
     return Promise.reject({ status: 400, msg: "invalid request" });
   }
 
   let sqlQuery = `SELECT * FROM events `;
-  if (category) {
+
+
+  if (category && skill_level) {
+    sqlQuery += `WHERE category='${category}' AND skill_level='${skill_level}' `
+  }
+
+  if (category && !skill_level) {
     sqlQuery += `WHERE category='${category}' `;
   }
+
+  if (skill_level && !category) {
+    sqlQuery += `WHERE skill_level='${skill_level}' `
+  }
   sqlQuery += `ORDER BY ${sortBy} ${orderBy};`;
+
+  if (!validSkillLevels.includes(skill_level) && skill_level) {
+    return Promise.reject({status: 400, msg: "Invalid skill level"})
+  }
 
   if (category) {
     return checkCategoryExists(category).then((value) => {
       if (!value) {
-        return Promise.reject({ status: 404, msg: "Not found" });
+        return Promise.reject({ status: 404, msg: "Category not found" });
       } else {
         return db.query(sqlQuery).then(({ rows }) => {
           return rows;
