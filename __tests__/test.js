@@ -246,14 +246,13 @@ describe("/api/events", () => {
         .then(({ body }) => {
           const { events } = body;
           events.forEach((event) => {
-            expect(event.category).toBe("basketball")
+            expect(event.category).toBe("basketball");
             expect(event.skill_level).toBe("intermediate");
           });
         });
     });
-    })
   });
-
+});
 
 describe("POST request", () => {
   it("accepts an object returns 201 and the new object", () => {
@@ -473,6 +472,47 @@ describe("/api/users", () => {
       .then(({ body }) => {
         expect(body.msg).toBe("Non-existent property");
       });
+  });
+});
+
+describe("/api/events/:event_id", () => {
+  describe("GET request", () => {
+    it("should return 200 and the event object with that event id", () => {
+      return request(app)
+        .get("/api/events/1")
+        .expect(200)
+        .then(({ body }) => {
+          const event = body;
+          expect(event).toEqual({
+            event_name: "My cool basketball scrimmage",
+            event_id: 1,
+            host: "DaddyDwain",
+            location: "London",
+            date: "2024-12-12T18:00:00.000Z",
+            category: "basketball",
+            age_range: "18+",
+            price: 6,
+            capacity: 12,
+            skill_level: "intermediate",
+          });
+        });
+    });
+    it("should return 404 and a message: article_id not found if article_id is not found", () => {
+      return request(app)
+        .get("/api/events/999999999")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("article_id is not found");
+        });
+    });
+    it("should return 404 and a message: invalid article_id input if invalid article_id input", () => {
+      return request(app)
+        .get("/api/events/notgood")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("invalid article_id input");
+        });
+    });
   });
 });
 
