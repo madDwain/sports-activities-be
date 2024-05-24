@@ -1,16 +1,21 @@
 const format = require("pg-format");
 const db = require("../connection");
-const { eventData, categoryData, membersData, commentsData } = require("../data/test-data");
+const {
+  eventData,
+  categoryData,
+  membersData,
+  commentsData,
+} = require("../data/test-data");
 const { formatEvents, createRef } = require("./utils");
 
 const seed = ({ userData, eventData, membersData, commentsData }) => {
-  return db.query(`DROP TABLE IF EXISTS comments`).then(() => {
-    return db
-    .query(`DROP TABLE IF EXISTS members`)
+  return db
+    .query(`DROP TABLE IF EXISTS comments`)
     .then(() => {
-      return db.query(`DROP TABLE IF EXISTS events;`);
+      return db.query(`DROP TABLE IF EXISTS members`).then(() => {
+        return db.query(`DROP TABLE IF EXISTS events;`);
+      });
     })
-  })
     .then(() => {
       return db.query(`DROP TABLE IF EXISTS users;`);
     })
@@ -65,8 +70,11 @@ const seed = ({ userData, eventData, membersData, commentsData }) => {
         is_accepted VARCHAR NOT NULL 
       );
       `);
-    }).then(() => {
-      return db.query(`CREATE TABLE comments (body VARCHAR, username VARCHAR REFERENCES users(username), event_id INT REFERENCES events(event_id), date TIMESTAMP DEFAULT NOW());`)
+    })
+    .then(() => {
+      return db.query(
+        `CREATE TABLE comments (comment_id SERIAL PRIMARY KEY, body VARCHAR, username VARCHAR REFERENCES users(username), event_id INT REFERENCES events(event_id), date TIMESTAMP DEFAULT NOW());`
+      );
     })
     .then(() => {
       const insertUsersQueryStr = format(
@@ -121,16 +129,27 @@ const seed = ({ userData, eventData, membersData, commentsData }) => {
     .then(() => {
       const insertMembersQueryStr = format(
         `INSERT INTO members (username, event_id, is_accepted) VALUES %L;`,
-        membersData.map(({ username, event_id, is_accepted }) => [username, event_id, is_accepted])
+        membersData.map(({ username, event_id, is_accepted }) => [
+          username,
+          event_id,
+          is_accepted,
+        ])
       );
 
-      return db.query(insertMembersQueryStr)
-    }).then(() => {
-      const insertCommentsQueryStr = format(
-        `INSERT INTO comments (body, username, event_id, date) VALUES %L;`, commentsData.map(({ body, username, event_id, date}) => [body, username, event_id, date])
-      )
-      return db.query(insertCommentsQueryStr)
+      return db.query(insertMembersQueryStr);
     })
+    .then(() => {
+      const insertCommentsQueryStr = format(
+        `INSERT INTO comments (body, username, event_id, date) VALUES %L;`,
+        commentsData.map(({ body, username, event_id, date }) => [
+          body,
+          username,
+          event_id,
+          date,
+        ])
+      );
+      return db.query(insertCommentsQueryStr);
+    });
 };
 
 module.exports = seed;
