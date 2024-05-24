@@ -1,4 +1,5 @@
 const db = require("../db/connection");
+const comments = require("../db/data/test-data/comments");
 
 
 function getCommentsData(event_id) {
@@ -15,4 +16,26 @@ function getCommentsData(event_id) {
       });
   }
 
-module.exports = {getCommentsData}
+  function postCommentData(comment, event_id) {
+    const { username, body } = comment;
+    const keysArray = Object.keys(comment);
+    if (
+      keysArray.length !== 2
+    ) {
+      return Promise.reject({
+        status: 400,
+        msg: "Bad request: incomplete body",
+      });
+    } else {
+      return db
+        .query(
+          `INSERT INTO comments (username, body, event_id) VALUES ($1, $2, $3) RETURNING *`,
+          [username, body, event_id]
+        )
+        .then((comment) => {
+          return comment.rows[0];
+        });
+    }
+  }
+
+module.exports = {getCommentsData, postCommentData}
