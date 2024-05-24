@@ -3,6 +3,11 @@ const { fetchEvents, fetchEventByID } = require("../models/events-models");
 const { fetchMembersByEventID } = require("../models/members-models");
 const { checkEventIDExists } = require("../db/seeds/utils");
 
+function getEndpoints(req, res, next) {
+  const endpoints = require("../endpoints.json");
+  res.status(200).send({ endpoints });
+}
+
 function getAllUsers(req, res, next) {
   return fetchUsers().then((users) => {
     res.status(200).send({ users });
@@ -41,8 +46,7 @@ function getEventMembers(req, res, next) {
 
   if (event_id) {
     checkEventIDExists(event_id)
-      .then((value) => {
-      })
+      .then((value) => {})
       .catch((err) => {
         next(err);
       });
@@ -62,4 +66,5 @@ module.exports = {
   getAllEvents,
   getEventByID,
   getEventMembers,
+  getEndpoints,
 };
