@@ -699,23 +699,40 @@ describe("/api/users/:username", () => {
   });
 });
 
-// describe("/api/events/:event_id/comments", () => {
-//   test("GET: 200 - should return all the comments for a given event", () => {
-//     return request(app)
-//       .get("/api/events/1/comments")
-//       .expect(200)
-//       .then(({ body }) => {
-//         const comments = body.comments;
-//         expect(comments.length).toBe(2);
-//         comments.map((comment) => {
-//           expect(typeof comment.body).toBe("string");
-//           expect(typeof comment.username).toBe("string");
-//           expect(typeof comment.event_id).toBe("number");
-//           expect(typeof comment.date).toBe("string");
-//         });
-//       });
-//   });
-// });
+describe("/api/events/:event_id/comments", () => {
+  test("GET: 200 - should return all the comments for a given event", () => {
+    return request(app)
+      .get("/api/events/1/comments")
+      .expect(200)
+      .then(({ body }) => {
+        const comments = body.comments;
+        expect(comments.length).toBe(2);
+        comments.map((comment) => {
+          expect(typeof comment.body).toBe("string");
+          expect(typeof comment.username).toBe("string");
+          expect(typeof comment.event_id).toBe("number");
+          expect(typeof comment.date).toBe("string");
+        });
+      });
+  });
+  test('GET: 400 - should return an error message for an invalid article id', () => {
+    return request(app)
+    .get("/api/events/invalid_id/comments")
+    .expect(400)
+    .then(({ body }) => {
+      expect(body.msg).toBe("invalid event_id input");
+    });
+  })
+    test("GET: 404 - should return an error message when given a valid but non-existent event id", () => {
+    return request(app)
+      .get("/api/events/999/comments")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("event not found");
+      });
+  });
+  
+});
 
 describe("/api/events/:event_id/members/:username", () => {
   describe("POST request", () => {
@@ -804,3 +821,5 @@ describe("/api/events/:event_id/members/:username", () => {
     });
   });
 });
+
+

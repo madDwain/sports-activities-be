@@ -1,7 +1,8 @@
-const { getAllEvents, getEventByID, getEventMembers } = require("../controllers/get-controllers")
+const { getAllEvents, getEventByID, getEventMembers, getAllComments } = require("../controllers/get-controllers")
 const { postEvent, postMember } = require('../controllers/post-controllers')
 const {deleteEventByID, deleteMember} = require("../controllers/delete-controllers")
 const { patchMember } = require('../controllers/patch-controllers')
+
 const express = require("express");
 const router = express.Router();
 
@@ -13,6 +14,7 @@ router.patch("/:event_id/members/:username", patchMember)
 router.delete("/:event_id", deleteEventByID)
 router.get("/:event_id/members", getEventMembers)
 router.delete("/:event_id/members/:username", deleteMember)
+router.get("/:event_id/comments", getAllComments)
 
 
 module.exports = router;

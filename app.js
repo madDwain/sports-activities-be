@@ -5,7 +5,6 @@ const {getEndpoints} = require('./controllers/get-controllers')
 const eventRoute = require("./routes/events");
 const userRoute = require("./routes/users");
 const categoriesRoute = require("./routes/categories")
-// const commentsRoute = require("./routes/comments")
 
 const app = express();
 app.use(cors());
@@ -17,8 +16,6 @@ app.use("/api/categories", categoriesRoute)
 
 app.use("/api/events", eventRoute);
 
-
-// app.use("/api/events/:event_id/comments", commentsRoute)
 
 app.get("/api", getEndpoints)
 
