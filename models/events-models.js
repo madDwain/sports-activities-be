@@ -88,7 +88,9 @@ function fetchEventByID(event_id) {
 }
 
 function deleteEventByIDData(event_id) {
-  return db.query(`DELETE FROM events WHERE event_id=$1 RETURNING *`, [event_id]).then((event) => {
+  return db.query(`DELETE FROM members WHERE event_id=$1`, [event_id]).then(() => {
+    return db.query(`DELETE FROM events WHERE event_id=$1 RETURNING *`, [event_id])
+  }).then((event) => {
     if (event.rows.length===0) {
       return Promise.reject({status: 404, msg: "Event not found"})
     }
