@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const {getEndpoints} = require('./controllers/get-controllers')
 
 const eventRoute = require("./routes/events");
 const userRoute = require("./routes/users");
@@ -16,7 +17,11 @@ app.use("/api/categories", categoriesRoute)
 
 app.use("/api/events", eventRoute);
 
+
 // app.use("/api/events/:event_id/comments", commentsRoute)
+
+app.get("/api", getEndpoints)
+
 
 app.use((err, req, res, next) => {
   if (err.status && err.msg) {

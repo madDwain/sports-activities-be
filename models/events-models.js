@@ -90,6 +90,7 @@ function fetchEventByID(event_id) {
 }
 
 function deleteEventByIDData(event_id) {
+
   return db
     .query(`DELETE FROM members WHERE event_id=$1 RETURNING *`, [event_id])
     .then(() => {
@@ -107,6 +108,7 @@ function deleteEventByIDData(event_id) {
             });
         });
     });
+
 }
 
 
