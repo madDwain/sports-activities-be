@@ -4,6 +4,7 @@ const cors = require("cors");
 const eventRoute = require("./routes/events");
 const userRoute = require("./routes/users");
 const categoriesRoute = require("./routes/categories")
+// const commentsRoute = require("./routes/comments")
 
 const app = express();
 app.use(cors());
@@ -14,6 +15,8 @@ app.use("/api/users", userRoute);
 app.use("/api/categories", categoriesRoute)
 
 app.use("/api/events", eventRoute);
+
+// app.use("/api/events/:event_id/comments", commentsRoute)
 
 app.use((err, req, res, next) => {
   if (err.status && err.msg) {

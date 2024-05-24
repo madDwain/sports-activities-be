@@ -1,4 +1,4 @@
-const { fetchUsers } = require("../models/users-models");
+const { fetchUsers, getUserData} = require("../models/users-models");
 const { fetchEvents, fetchEventByID } = require("../models/events-models");
 const { fetchMembersByEventID } = require("../models/members-models");
 const { checkEventIDExists } = require("../db/seeds/utils");
@@ -57,9 +57,18 @@ function getEventMembers(req, res, next) {
     });
 }
 
+function getUser(req, res, next) {
+  const {username} = req.params
+  console.log(username)
+  getUserData(username).then((user)=> {
+    res.status(200).send({user})
+  }).catch(next)
+}
+
 module.exports = {
   getAllUsers,
   getAllEvents,
   getEventByID,
   getEventMembers,
+  getUser
 };

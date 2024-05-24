@@ -499,14 +499,10 @@ describe("/api/events/:event_id", () => {
         .get("/api/events/999999999")
         .expect(404)
         .then(({ body }) => {
-          expect(body.msg).toBe("article_id is not found");
+          expect(body.msg).toBe("event_id is not found");
         });
     });
-    it("should return 404 and a message: invalid event_id input if invalid event_id input", () => {
-          expect(body.msg).toBe("event id is not found");
-        });
-    });
-    it("should return 404 and a message: invalid event id input if invalid event id input", () => {
+    it("should return 400 and a message: invalid event id input if invalid event id input", () => {
       return request(app)
         .get("/api/events/notgood")
         .expect(400)
@@ -600,36 +596,88 @@ describe("/api/categories", () => {
     test("returns 400 - should return an error message when there is a missing required field in the body", () => {
       const category = {
         name: "cricket",
-        description: "hitting the ball with the bat"
-      })
-    })
-  })
-  test('POST: 400 - should return an error message when there is a missing required field in the body', () => {
+        description: "hitting the ball with the bat",
+      };
+    });
+  });
+  test("POST: 400 - should return an error message when there is a missing required field in the body", () => {
     const category = {
-      name: "cricket"
-    }
+      name: "cricket",
+    };
     return request(app)
-    .post("/api/categories")
-    .send(category)
-    .expect(400)
-    .then(({body}) => {
-      expect(body.msg).toBe("Missing field")
-      })
-  })
-})
+      .post("/api/categories")
+      .send(category)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Missing field");
+      });
+  });
+});
 
-describe('/api/events/:event_id', () => {
-  test('DELETE: 204 - should delete an event by event id', () => {
-    return request(app).delete("/api/events/1").expect(204)
-  })
-  test('DELETE: 404 - should return a message when we delete an event by a valid but non-existent event id', () => {
-    return request(app).delete("/api/events/9999").expect(404).then(({body}) => {
-      expect(body.msg).toBe("Event not found")
-    })
-  })
-  test('DELETE: 400 - should return a message when we delete an event by an invalid event id', () => {
-    return request(app).delete("/api/events/invalid_id").expect(400).then(({body}) => {
-      expect(body.msg).toBe("invalid event_id input")
-    })
-  })
-})
+describe("/api/events/:event_id", () => {
+  test("DELETE: 204 - should delete an event by event id", () => {
+    return request(app).delete("/api/events/1").expect(204);
+  });
+  test("DELETE: 404 - should return a message when we delete an event by a valid but non-existent event id", () => {
+    return request(app)
+      .delete("/api/events/9999")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Event not found");
+      });
+  });
+  test("DELETE: 400 - should return a message when we delete an event by an invalid event id", () => {
+    return request(app)
+      .delete("/api/events/invalid_id")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("invalid event_id input");
+      });
+  });
+});
+
+describe("/api/users/:username", () => {
+  test("GET: 200 - should return a user by username", () => {
+    return request(app)
+      .get("/api/users/cronaldo")
+      .expect(200)
+      .then(({ body }) => {
+        const user = body.user;
+        expect(user).toMatchObject({
+          username: "cronaldo",
+          first_name: "Alan",
+          last_name: "Knobs",
+          avatar_url:
+            "https://avatars2.githubusercontent.com/u/24394918?s=400&v=4",
+          age: 36,
+          interests: "I enjoy playing football",
+        });
+      });
+  });
+  test("GET: 404 - sends an appropriate status and error mesage when given a non-existent user", () => {
+    return request(app)
+      .get("/api/users/non-existent")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("User not found");
+      });
+  });
+});
+
+// describe("/api/events/:event_id/comments", () => {
+//   test("GET: 200 - should return all the comments for a given event", () => {
+//     return request(app)
+//       .get("/api/events/1/comments")
+//       .expect(200)
+//       .then(({ body }) => {
+//         const comments = body.comments;
+//         expect(comments.length).toBe(2);
+//         comments.map((comment) => {
+//           expect(typeof comment.body).toBe("string");
+//           expect(typeof comment.username).toBe("string");
+//           expect(typeof comment.event_id).toBe("number");
+//           expect(typeof comment.date).toBe("string");
+//         });
+//       });
+//   });
+// });

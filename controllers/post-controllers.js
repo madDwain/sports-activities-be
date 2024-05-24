@@ -34,4 +34,5 @@ function postCategory(req, res, next) {
 }
 
 
+
 module.exports = { postUser, postEvent, postCategory };
