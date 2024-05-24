@@ -647,3 +647,41 @@ describe("/api/events/:event_id", () => {
       });
   });
 });
+
+describe("/api/events/:event_id/members/:username", () => {
+  describe("POST request", () => {
+    it("returns 201 and object with is_accpted = pending", () => {
+      return request(app)
+        .post("/api/events/1/members/cronaldo")
+        .expect(201)
+        .then(({ body }) => {
+          console.log(body, 'in test')
+          expect(body).toEqual({
+            username: "cronaldo",
+            event_id: 1,
+            is_accepted: "pending",
+          });
+        });
+    });
+    it("returns 404 and a message if username does not exist", () => {
+      return request(app)
+        .post("/api/events/1/members/notausername")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("username not found");
+        });
+    });
+    it("returns 404 and a message if event_id does not exist", () => {
+      return request(app)
+        .post("/api/events/999999999/members/cronaldo")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("event_id does not exist");
+        });
+    });
+  });
+
+  // describe("PATCH request", () => {
+  //   it("will accept a patch object with is_accepted = true/pending")
+  // })
+});

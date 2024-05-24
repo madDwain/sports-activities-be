@@ -14,4 +14,14 @@ function fetchMembersByEventID(event_id, is_accepted) {
   });
 }
 
-module.exports = { fetchMembersByEventID };
+function insertMember(username, event_id) {
+  return db.query(`INSERT INTO members (username, event_id, is_accepted)
+  VALUES
+  ($1, $2, 'pending') RETURNING *;`,
+  [username, event_id]
+  ).then(({ rows }) => {
+    return rows[0]
+  })
+}
+
+module.exports = { fetchMembersByEventID, insertMember };
