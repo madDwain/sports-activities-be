@@ -81,10 +81,18 @@ function fetchEventByID(event_id) {
     .query(`SELECT * FROM events WHERE event_id = $1;`, [event_id])
     .then(({ rows }) => {
       if (rows.length === 0) {
-        return Promise.reject({ status: 404, msg: "event id is not found" });
+        return Promise.reject({ status: 404, msg: "event_id is not found" });
       }
       return rows[0];
     });
 }
 
-module.exports = { fetchEvents, insertEvent, fetchEventByID };
+function deleteEventByIDData(event_id) {
+  return db.query(`DELETE FROM events WHERE event_id=$1 RETURNING *`, [event_id]).then((event) => {
+    if (event.rows.length===0) {
+      return Promise.reject({status: 404, msg: "Event not found"})
+    }
+  })
+}
+
+module.exports = { fetchEvents, insertEvent, fetchEventByID, deleteEventByIDData };

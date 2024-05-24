@@ -493,11 +493,16 @@ describe("/api/events/:event_id", () => {
           });
         });
     });
+
     it("should return 404 and a message: event id not found if event id is not found", () => {
       return request(app)
         .get("/api/events/999999999")
         .expect(404)
         .then(({ body }) => {
+          expect(body.msg).toBe("event_id is not found");
+        });
+    });
+    it("should return 404 and a message: invalid event_id input if invalid event_id input", () => {
           expect(body.msg).toBe("event id is not found");
         });
     });
@@ -506,7 +511,7 @@ describe("/api/events/:event_id", () => {
         .get("/api/events/notgood")
         .expect(400)
         .then(({ body }) => {
-          expect(body.msg).toBe("invalid event id input");
+          expect(body.msg).toBe("invalid event_id input");
         });
     });
   });
@@ -536,7 +541,7 @@ describe("/api/events/:event_id/members", () => {
           });
         });
     });
-    test("returns 200 and an array of usernames which are pwnding to an event, when queried", () => {
+    test("returns 200 and an array of usernames which are pending to an event, when queried", () => {
       return request(app)
         .get("/api/events/2/members?is_accepted=pending")
         .expect(200)
@@ -595,14 +600,36 @@ describe("/api/categories", () => {
     test("returns 400 - should return an error message when there is a missing required field in the body", () => {
       const category = {
         name: "cricket",
-      };
-      return request(app)
-        .post("/api/categories")
-        .send(category)
-        .expect(400)
-        .then(({ body }) => {
-          expect(body.msg).toBe("Missing field");
-        });
-    });
-  });
-});
+        description: "hitting the ball with the bat"
+      })
+    })
+  })
+  test('POST: 400 - should return an error message when there is a missing required field in the body', () => {
+    const category = {
+      name: "cricket"
+    }
+    return request(app)
+    .post("/api/categories")
+    .send(category)
+    .expect(400)
+    .then(({body}) => {
+      expect(body.msg).toBe("Missing field")
+      })
+  })
+})
+
+describe('/api/events/:event_id', () => {
+  test('DELETE: 204 - should delete an event by event id', () => {
+    return request(app).delete("/api/events/1").expect(204)
+  })
+  test('DELETE: 404 - should return a message when we delete an event by a valid but non-existent event id', () => {
+    return request(app).delete("/api/events/9999").expect(404).then(({body}) => {
+      expect(body.msg).toBe("Event not found")
+    })
+  })
+  test('DELETE: 400 - should return a message when we delete an event by an invalid event id', () => {
+    return request(app).delete("/api/events/invalid_id").expect(400).then(({body}) => {
+      expect(body.msg).toBe("invalid event_id input")
+    })
+  })
+})
