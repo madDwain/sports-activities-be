@@ -711,4 +711,27 @@ describe("/api/events/:event_id/members/:username", () => {
         });
     });
   });
+  describe("DELETE request", () => {
+    it("returns 204 and deletes member from members table", () => {
+      return request(app)
+        .delete("/api/events/2/members/dodgeball_king")
+        .expect(204);
+    });
+    it("returns 404 and a message if username does not exist", () => {
+      return request(app)
+        .delete("/api/events/1/members/notausername")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("member not found");
+        });
+    });
+    it("returns 404 and a message if event does not exist", () => {
+      return request(app)
+        .delete("/api/events/999999999/members/dodgeball_king")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("member not found");
+        });
+    });
+  });
 });

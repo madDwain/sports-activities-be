@@ -33,4 +33,12 @@ function patchMemberData(username, event_id, is_accepted) {
   })
 }
 
-module.exports = { fetchMembersByEventID, insertMember, patchMemberData };
+function removeMember(username, event_id) {
+  return db.query(`DELETE FROM members WHERE username=$1 AND event_id=$2 RETURNING *;`, [username, event_id]).then(({rows}) => {
+    if (rows.length === 0) {
+      return Promise.reject({status: 404, msg: 'member not found'})
+    }
+  })
+}
+
+module.exports = { fetchMembersByEventID, insertMember, patchMemberData, removeMember };
