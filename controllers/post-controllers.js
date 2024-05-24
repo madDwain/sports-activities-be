@@ -3,6 +3,7 @@ const { insertEvent, fetchEvents } = require("../models/events-models");
 const { postCategoryData } = require("../models/categories-models");
 const { insertMember } = require("../models/members-models");
 const { checkEventIDExists } = require("../db/seeds/utils");
+const {postCommentData} = require("../models/comments-models")
 
 function postUser(req, res, next) {
   return insertUser(req.body)
@@ -52,8 +53,18 @@ function postMember(req, res, next) {
     });
 }
 
+function postComment(req, res, next) {
+  const comment = req.body;
+  const { event_id } = req.params;
+  postCommentData(comment, event_id)
+    .then((comment) => {
+      res.status(201).send({ comment });
+    })
+    .catch(next);
+}
 
 
 
-module.exports = { postUser, postEvent, postCategory, postMember };
+
+module.exports = { postUser, postEvent, postCategory, postMember, postComment };
 

@@ -823,3 +823,53 @@ describe("/api/events/:event_id/members/:username", () => {
     });
   });
 });
+
+describe("/api/events/:event_id/comments", () => {
+  test("POST: 201 - should post a comment for the given event id", () => {
+    const comment = {
+      username: "cronaldo",
+      body: "Is the equipment included?",
+    };
+    return request(app)
+      .post("/api/events/2/comments")
+      .send(comment)
+      .expect(201)
+      .then(({ body }) => {
+        expect(body.comment).toMatchObject({
+          username: "cronaldo",
+          body: "Is the equipment included?",
+          event_id: 2,
+        });
+        expect(typeof body.comment.date).toEqual("string");
+      });
+  });
+
+  test("POST: 400 - should return an error message when client posts a comment with incomplete body", () => {
+    const comment = {
+      username: "cronaldo",
+    };
+    return request(app)
+      .post("/api/events/2/comments")
+      .send(comment)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad request: incomplete body");
+      });
+  });
+
+  test("POST: 404 - should return an error message when client posts a comment to a non-existent article", () => {
+    const comment = {
+      username: "cronaldo",
+      body: "Is the equipment included?",
+    };
+    return request(app)
+      .post("/api/events/999/comments")
+      .send(comment)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Not found");
+      });
+  });
+});
+
+
