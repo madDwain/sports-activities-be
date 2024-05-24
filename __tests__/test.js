@@ -502,10 +502,10 @@ describe("/api/events/:event_id", () => {
         .get("/api/events/999999999")
         .expect(404)
         .then(({ body }) => {
-          expect(body.msg).toBe("event_id is not found");
+          expect(body.msg).toBe("article_id is not found");
         });
     });
-    it("should return 404 and a message: invalid event_id input if invalid article_id input", () => {
+    it("should return 404 and a message: invalid event_id input if invalid event_id input", () => {
       return request(app)
         .get("/api/events/notgood")
         .expect(400)
