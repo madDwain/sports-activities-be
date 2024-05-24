@@ -125,6 +125,131 @@ describe("/api/users", () => {
         });
     });
   });
+  describe("PATCH request", () => {
+    test("returns 200 - should return a patched user where the first name has been edited", () => {
+      const user = {
+        first_name: "Lucy",
+      };
+      return request(app)
+        .patch("/api/users/dodgeball_queen")
+        .send(user)
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.user).toMatchObject({
+            username: "dodgeball_queen",
+            first_name: "Lucy",
+            last_name: "Bloggs",
+            age: 49,
+            avatar_url:
+              "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg",
+            interests: "I enjoy playing dodgeball and basketball",
+          });
+        });
+    });
+    test("returns 200 - should return a patched user where the last name has been edited", () => {
+      const user = {
+        last_name: "Jones",
+      };
+      return request(app)
+        .patch("/api/users/dodgeball_queen")
+        .send(user)
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.user).toMatchObject({
+            username: "dodgeball_queen",
+            first_name: "Sarah",
+            last_name: "Jones",
+            age: 49,
+            avatar_url:
+              "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg",
+            interests: "I enjoy playing dodgeball and basketball",
+          });
+        });
+    });
+    test("returns 200 - should return a patched user where the age has been edited", () => {
+      const user = {
+        age: 55,
+      };
+      return request(app)
+        .patch("/api/users/dodgeball_queen")
+        .send(user)
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.user).toMatchObject({
+            username: "dodgeball_queen",
+            first_name: "Sarah",
+            last_name: "Bloggs",
+            age: 55,
+            avatar_url:
+              "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg",
+            interests: "I enjoy playing dodgeball and basketball",
+          });
+        });
+    });
+    test("returns 200 - should return a patched user where the avatar url has been edited", () => {
+      const user = {
+        avatar_url: "different_url",
+      };
+      return request(app)
+        .patch("/api/users/dodgeball_queen")
+        .send(user)
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.user).toMatchObject({
+            username: "dodgeball_queen",
+            first_name: "Sarah",
+            last_name: "Bloggs",
+            age: 49,
+            avatar_url: "different_url",
+            interests: "I enjoy playing dodgeball and basketball",
+          });
+        });
+    });
+    test("returns 200 - should return a patched user where the interests have been edited", () => {
+      const user = {
+        interests: "I enjoy playing football",
+      };
+      return request(app)
+        .patch("/api/users/dodgeball_queen")
+        .send(user)
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.user).toMatchObject({
+            username: "dodgeball_queen",
+            first_name: "Sarah",
+            last_name: "Bloggs",
+            age: 49,
+            avatar_url:
+              "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg",
+            interests: "I enjoy playing football",
+          });
+        });
+    });
+    test("returns 404 - should return an error message when we patch a user that does not exist", () => {
+      const user = {
+        interests: "I enjoy playing football",
+      };
+      return request(app)
+        .patch("/api/users/non-existent-user")
+        .send(user)
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Username not found");
+        });
+    });
+    test("returns 400 - should return an error message when we patch by a property that does not exist", () => {
+      const user = {
+        pets: "dogs",
+      };
+      return request(app)
+        .patch("/api/users/dodgeball_queen")
+        .send(user)
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Non-existent property");
+        });
+    });
+  });
 });
 
 describe("/api/events", () => {
@@ -252,226 +377,97 @@ describe("/api/events", () => {
         });
     });
   });
-});
-
-describe("POST request", () => {
-  it("accepts an object returns 201 and the new object", () => {
-    const newEvent = {
-      event_name: "My cool NEW basketball series",
-      host: "DaddyDwain",
-      location: "London",
-      date: "2024/12/31 12:00:23",
-      category: "basketball",
-      age_range: "18+",
-      price: 6,
-      capacity: 12,
-      skill_level: "expert",
-    };
-    return request(app)
-      .post("/api/events")
-      .send(newEvent)
-      .expect(201)
-      .then(({ body }) => {
-        const event = body;
-        expect(event).toHaveProperty("event_name");
-        expect(event).toHaveProperty("host");
-        expect(event).toHaveProperty("location");
-        expect(event).toHaveProperty("date");
-        expect(event).toHaveProperty("category");
-        expect(event).toHaveProperty("age_range");
-        expect(event).toHaveProperty("price");
-        expect(event).toHaveProperty("capacity");
-        expect(event).toHaveProperty("skill_level");
-      });
-  });
-  it("returns 400: bad request if no object is passed", () => {
-    return request(app)
-      .post("/api/events")
-      .send()
-      .expect(400)
-      .then(({ body }) => {
-        expect(body.msg).toBe("invalid object passed");
-      });
-  });
-  it("returns 404 when the host is not an existing user", () => {
-    const newEvent = {
-      event_name: "My cool NEW basketball series",
-      host: "SomeoneElse",
-      location: "London",
-      date: "2024/12/31 12:00:23",
-      category: "basketball",
-      age_range: "18+",
-      price: 6,
-      capacity: 12,
-      skill_level: "expert",
-    };
-    return request(app)
-      .post("/api/events")
-      .send(newEvent)
-      .expect(404)
-      .then(({ body }) => {
-        expect(body.msg).toBe("username not found");
-      });
-  });
-  it("accepts an object returns 201 and the new object, ignoring extra keys", () => {
-    const newEvent = {
-      event_name: "My cool NEW basketball series",
-      host: "DaddyDwain",
-      location: "London",
-      date: "2024/12/31 12:00:23",
-      category: "basketball",
-      age_range: "18+",
-      price: 6,
-      capacity: 12,
-      skill_level: "expert",
-      pets: "dog",
-    };
-    return request(app)
-      .post("/api/events")
-      .send(newEvent)
-      .expect(201)
-      .then(({ body }) => {
-        const event = body;
-        const eventArray = Object.keys(event);
-        expect(event).toHaveProperty("event_name");
-        expect(event).toHaveProperty("host");
-        expect(event).toHaveProperty("location");
-        expect(event).toHaveProperty("date");
-        expect(event).toHaveProperty("category");
-        expect(event).toHaveProperty("age_range");
-        expect(event).toHaveProperty("price");
-        expect(event).toHaveProperty("capacity");
-        expect(event).toHaveProperty("skill_level");
-        expect(eventArray.length).toBe(10);
-      });
-  });
-});
-
-describe("/api/events", () => {});
-
-describe("/api/users", () => {
-  test("PATCH: 200 - should return a patched user where the first name has been edited", () => {
-    const user = {
-      first_name: "Lucy",
-    };
-    return request(app)
-      .patch("/api/users/dodgeball_queen")
-      .send(user)
-      .expect(200)
-      .then(({ body }) => {
-        expect(body.user).toMatchObject({
-          username: "dodgeball_queen",
-          first_name: "Lucy",
-          last_name: "Bloggs",
-          age: 49,
-          avatar_url:
-            "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg",
-          interests: "I enjoy playing dodgeball and basketball",
+  describe("POST request", () => {
+    it("accepts an object returns 201 and the new object", () => {
+      const newEvent = {
+        event_name: "My cool NEW basketball series",
+        host: "DaddyDwain",
+        location: "London",
+        date: "2024/12/31 12:00:23",
+        category: "basketball",
+        age_range: "18+",
+        price: 6,
+        capacity: 12,
+        skill_level: "expert",
+      };
+      return request(app)
+        .post("/api/events")
+        .send(newEvent)
+        .expect(201)
+        .then(({ body }) => {
+          const event = body;
+          expect(event).toHaveProperty("event_name");
+          expect(event).toHaveProperty("host");
+          expect(event).toHaveProperty("location");
+          expect(event).toHaveProperty("date");
+          expect(event).toHaveProperty("category");
+          expect(event).toHaveProperty("age_range");
+          expect(event).toHaveProperty("price");
+          expect(event).toHaveProperty("capacity");
+          expect(event).toHaveProperty("skill_level");
         });
-      });
-  });
-  test("PATCH: 200 - should return a patched user where the last name has been edited", () => {
-    const user = {
-      last_name: "Jones",
-    };
-    return request(app)
-      .patch("/api/users/dodgeball_queen")
-      .send(user)
-      .expect(200)
-      .then(({ body }) => {
-        expect(body.user).toMatchObject({
-          username: "dodgeball_queen",
-          first_name: "Sarah",
-          last_name: "Jones",
-          age: 49,
-          avatar_url:
-            "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg",
-          interests: "I enjoy playing dodgeball and basketball",
+    });
+    it("returns 400: bad request if no object is passed", () => {
+      return request(app)
+        .post("/api/events")
+        .send()
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("invalid object passed");
         });
-      });
-  });
-  test("PATCH: 200 - should return a patched user where the age has been edited", () => {
-    const user = {
-      age: 55,
-    };
-    return request(app)
-      .patch("/api/users/dodgeball_queen")
-      .send(user)
-      .expect(200)
-      .then(({ body }) => {
-        expect(body.user).toMatchObject({
-          username: "dodgeball_queen",
-          first_name: "Sarah",
-          last_name: "Bloggs",
-          age: 55,
-          avatar_url:
-            "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg",
-          interests: "I enjoy playing dodgeball and basketball",
+    });
+    it("returns 404 when the host is not an existing user", () => {
+      const newEvent = {
+        event_name: "My cool NEW basketball series",
+        host: "SomeoneElse",
+        location: "London",
+        date: "2024/12/31 12:00:23",
+        category: "basketball",
+        age_range: "18+",
+        price: 6,
+        capacity: 12,
+        skill_level: "expert",
+      };
+      return request(app)
+        .post("/api/events")
+        .send(newEvent)
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("username not found");
         });
-      });
-  });
-  test("PATCH: 200 - should return a patched user where the avatar url has been edited", () => {
-    const user = {
-      avatar_url: "different_url",
-    };
-    return request(app)
-      .patch("/api/users/dodgeball_queen")
-      .send(user)
-      .expect(200)
-      .then(({ body }) => {
-        expect(body.user).toMatchObject({
-          username: "dodgeball_queen",
-          first_name: "Sarah",
-          last_name: "Bloggs",
-          age: 49,
-          avatar_url: "different_url",
-          interests: "I enjoy playing dodgeball and basketball",
+    });
+    it("accepts an object returns 201 and the new object, ignoring extra keys", () => {
+      const newEvent = {
+        event_name: "My cool NEW basketball series",
+        host: "DaddyDwain",
+        location: "London",
+        date: "2024/12/31 12:00:23",
+        category: "basketball",
+        age_range: "18+",
+        price: 6,
+        capacity: 12,
+        skill_level: "expert",
+        pets: "dog",
+      };
+      return request(app)
+        .post("/api/events")
+        .send(newEvent)
+        .expect(201)
+        .then(({ body }) => {
+          const event = body;
+          const eventArray = Object.keys(event);
+          expect(event).toHaveProperty("event_name");
+          expect(event).toHaveProperty("host");
+          expect(event).toHaveProperty("location");
+          expect(event).toHaveProperty("date");
+          expect(event).toHaveProperty("category");
+          expect(event).toHaveProperty("age_range");
+          expect(event).toHaveProperty("price");
+          expect(event).toHaveProperty("capacity");
+          expect(event).toHaveProperty("skill_level");
+          expect(eventArray.length).toBe(10);
         });
-      });
-  });
-  test("PATCH: 200 - should return a patched user where the interests have been edited", () => {
-    const user = {
-      interests: "I enjoy playing football",
-    };
-    return request(app)
-      .patch("/api/users/dodgeball_queen")
-      .send(user)
-      .expect(200)
-      .then(({ body }) => {
-        expect(body.user).toMatchObject({
-          username: "dodgeball_queen",
-          first_name: "Sarah",
-          last_name: "Bloggs",
-          age: 49,
-          avatar_url:
-            "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg",
-          interests: "I enjoy playing football",
-        });
-      });
-  });
-  test("PATCH: 404 - should return an error message when we patch a user that does not exist", () => {
-    const user = {
-      interests: "I enjoy playing football",
-    };
-    return request(app)
-      .patch("/api/users/non-existent-user")
-      .send(user)
-      .expect(404)
-      .then(({ body }) => {
-        expect(body.msg).toBe("Username not found");
-      });
-  });
-  test("PATCH: 400 - should return an error message when we patch by a property that does not exist", () => {
-    const user = {
-      pets: "dogs",
-    };
-    return request(app)
-      .patch("/api/users/dodgeball_queen")
-      .send(user)
-      .expect(400)
-      .then(({ body }) => {
-        expect(body.msg).toBe("Non-existent property");
-      });
+    });
   });
 });
 
@@ -497,7 +493,8 @@ describe("/api/events/:event_id", () => {
           });
         });
     });
-    it("should return 404 and a message: event_id not found if event_id is not found", () => {
+
+    it("should return 404 and a message: event id not found if event id is not found", () => {
       return request(app)
         .get("/api/events/999999999")
         .expect(404)
@@ -505,7 +502,11 @@ describe("/api/events/:event_id", () => {
           expect(body.msg).toBe("event_id is not found");
         });
     });
-    it("should return 404 and a message: invalid event_id input if invalid article_id input", () => {
+    it("should return 404 and a message: invalid event_id input if invalid event_id input", () => {
+          expect(body.msg).toBe("event id is not found");
+        });
+    });
+    it("should return 404 and a message: invalid event id input if invalid event id input", () => {
       return request(app)
         .get("/api/events/notgood")
         .expect(400)
@@ -516,29 +517,88 @@ describe("/api/events/:event_id", () => {
   });
 });
 
-describe('/api/users/:username', () => {
-  test('DELETE: 204 - should delete the given user by the username', () => {
-    return request(app).delete("/api/users/dodgeball_king").expect(204)
-  })
-  test("DELETE: 404 - should return an error message when we attempt to delete a non-existent username", () => {
-    return request(app)
-      .delete("/api/users/not-a-user")
-      .expect(404)
-      .then(({ body }) => {
-        expect(body.msg).toBe("User not found");
-      });
+describe("/api/events/:event_id/members", () => {
+  describe("GET request", () => {
+    test("returns 200 and an array of the usernames which are members of an event, pending or accepted", () => {
+      return request(app)
+        .get("/api/events/1/members")
+        .then(({ body }) => {
+          const members = body;
+          members.forEach((member) => {
+            expect(member.event_id).toBe(1);
+          });
+        });
+    });
+    test("returns 200 and an array of usernames which are accepted to an event, when queried", () => {
+      return request(app)
+        .get("/api/events/2/members?is_accepted=true")
+        .expect(200)
+        .then(({ body }) => {
+          const members = body;
+          members.forEach((member) => {
+            expect(member.event_id).toBe(2);
+            expect(member.is_accepted).toBe("true");
+          });
+        });
+    });
+    test("returns 200 and an array of usernames which are pending to an event, when queried", () => {
+      return request(app)
+        .get("/api/events/2/members?is_accepted=pending")
+        .expect(200)
+        .then(({ body }) => {
+          const members = body;
+          members.forEach((member) => {
+            expect(member.event_id).toBe(2);
+            expect(member.is_accepted).toBe("pending");
+          });
+        });
+    });
+    test("returns 404 and a message if event_id is not found", () => {
+      return request(app)
+        .get("/api/events/99999999/members")
+        .then(({ body }) => {
+          expect(body.msg).toBe("event_id does not exist");
+        });
+    });
   });
-})
+});
 
-describe('/api/categories', () => {
-  test('POST: 201 - should post a new category', () => {
-    const category = {name: "cricket", description: "hitting the ball with the bat"}
-    return request(app)
-    .post("/api/categories")
-    .send(category)
-    .expect(201)
-    .then(({body}) => {
-      expect(body).toMatchObject({
+describe("/api/users/:username", () => {
+  describe("DELETE request", () => {
+    test("returns 204 - should delete the given user by the username", () => {
+      return request(app).delete("/api/users/dodgeball_king").expect(204);
+    });
+    test("returns 404 - should return an error message when we attempt to delete a non-existent username", () => {
+      return request(app)
+        .delete("/api/users/not-a-user")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("User not found");
+        });
+    });
+  });
+});
+
+describe("/api/categories", () => {
+  describe("POST request", () => {
+    test("returns 201 - should post a new category", () => {
+      const category = {
+        name: "cricket",
+        description: "hitting the ball with the bat",
+      };
+      return request(app)
+        .post("/api/categories")
+        .send(category)
+        .expect(201)
+        .then(({ body }) => {
+          expect(body).toMatchObject({
+            name: "cricket",
+            description: "hitting the ball with the bat",
+          });
+        });
+    });
+    test("returns 400 - should return an error message when there is a missing required field in the body", () => {
+      const category = {
         name: "cricket",
         description: "hitting the ball with the bat"
       })
@@ -572,5 +632,4 @@ describe('/api/events/:event_id', () => {
       expect(body.msg).toBe("invalid event_id input")
     })
   })
-  
 })

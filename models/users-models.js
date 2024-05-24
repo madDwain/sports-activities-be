@@ -35,11 +35,11 @@ function patchUserData(
   avatar_url,
   interests
 ) {
-    const validProperties = [first_name, last_name, age, avatar_url,interests]
-    
-    if (validProperties.every((element) => element === undefined))  {
-        return Promise.reject({status: 400, msg: "Non-existent property"})
-    }
+  const validProperties = [first_name, last_name, age, avatar_url, interests];
+
+  if (validProperties.every((element) => element === undefined)) {
+    return Promise.reject({ status: 400, msg: "Non-existent property" });
+  }
   if (first_name) {
     return db
       .query(`UPDATE users SET first_name=$1 WHERE username = $2 RETURNING *`, [
@@ -47,8 +47,8 @@ function patchUserData(
         username,
       ])
       .then((user) => {
-        if(user.rows.length===0) {
-            return Promise.reject({status: 404, msg: "Username not found"})
+        if (user.rows.length === 0) {
+          return Promise.reject({ status: 404, msg: "Username not found" });
         }
         return user.rows[0];
       });
@@ -60,8 +60,8 @@ function patchUserData(
         username,
       ])
       .then((user) => {
-        if(user.rows.length===0) {
-            return Promise.reject({status: 404, msg: "Username not found"})
+        if (user.rows.length === 0) {
+          return Promise.reject({ status: 404, msg: "Username not found" });
         }
         return user.rows[0];
       });
@@ -73,8 +73,8 @@ function patchUserData(
         username,
       ])
       .then((user) => {
-        if(user.rows.length===0) {
-            return Promise.reject({status: 404, msg: "Username not found"})
+        if (user.rows.length === 0) {
+          return Promise.reject({ status: 404, msg: "Username not found" });
         }
         return user.rows[0];
       });
@@ -86,9 +86,9 @@ function patchUserData(
         username,
       ])
       .then((user) => {
-          if(user.rows.length===0) {
-              return Promise.reject({status: 404, message: "Username not found"})
-          }
+        if (user.rows.length === 0) {
+          return Promise.reject({ status: 404, message: "Username not found" });
+        }
         return user.rows[0];
       });
   }
@@ -99,8 +99,8 @@ function patchUserData(
         username,
       ])
       .then((user) => {
-        if(user.rows.length===0) {
-            return Promise.reject({status: 404, msg: "Username not found"})
+        if (user.rows.length === 0) {
+          return Promise.reject({ status: 404, msg: "Username not found" });
         }
         return user.rows[0];
       });
@@ -108,18 +108,39 @@ function patchUserData(
 }
 
 function deleteUserData(username) {
-  return db.query("DELETE FROM events WHERE host=$1", [username]).then(() => {
-    return db.query("DELETE FROM users WHERE username=$1 RETURNING *", [username]).then((user) => {
-      if (user.rows.length === 0) {
-        return Promise.reject({status: 404, msg: "User not found"})
-      }
+  return db
+    .query("ALTER TABLE members DROP CONSTRAINT members_event_id_fkey;")
+    .then(() => {
+      return db.query(
+        `ALTER TABLE members
+    ADD CONSTRAINT members_event_id_fkey
+    FOREIGN KEY (event_id)
+    REFERENCES events(event_id)
+    ON DELETE CASCADE;`
+      );
     })
-  })
+    .then(() => {
+      return db.query("DELETE FROM members WHERE username=$1 RETURNING *;", [
+        username,
+      ]);
+    })
+    .then(({ rows }) => {
+      return db.query("DELETE FROM events WHERE host=$1", [username]);
+    })
+    .then(() => {
+      return db
+        .query("DELETE FROM users WHERE username=$1 RETURNING *", [username])
+        .then((user) => {
+          if (user.rows.length === 0) {
+            return Promise.reject({ status: 404, msg: "User not found" });
+          }
+        });
+    });
 }
 
 module.exports = {
   fetchUsers,
   insertUser,
   patchUserData,
-  deleteUserData
+  deleteUserData,
 };

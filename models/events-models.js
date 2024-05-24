@@ -37,13 +37,12 @@ function fetchEvents(sortBy = "date", orderBy = "ASC", category, skill_level) {
 
   if (category) {
     return checkCategoryExists(category).then((value) => {
-      if (!value) {
-        return Promise.reject({ status: 404, msg: "Category not found" });
-      } else {
-        return db.query(sqlQuery).then(({ rows }) => {
-          return rows;
-        });
-      }
+      return db.query(sqlQuery).then(({ rows }) => {
+        return rows;
+      })
+      .catch((err) => {
+        next(err)
+      })
     });
   }
 
