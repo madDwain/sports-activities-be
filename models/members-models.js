@@ -24,4 +24,13 @@ function insertMember(username, event_id) {
   })
 }
 
-module.exports = { fetchMembersByEventID, insertMember };
+function patchMemberData(username, event_id, is_accepted) {
+  return db.query(`UPDATE members SET is_accepted=$1 WHERE username=$2 AND event_id=$3 RETURNING *;`, [is_accepted, username, event_id]).then(({ rows }) => {
+    if (rows.length === 0) {
+      return Promise.reject({status: 404, msg: 'username not found'})
+    }
+    return rows[0]
+  })
+}
+
+module.exports = { fetchMembersByEventID, insertMember, patchMemberData };
