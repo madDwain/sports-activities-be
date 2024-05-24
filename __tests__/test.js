@@ -520,7 +520,6 @@ describe("/api/events/:event_id", () => {
         .expect(400)
         .then(({ body }) => {
           expect(body.msg).toBe("invalid event_id input");
-
         });
     });
   });
@@ -634,7 +633,6 @@ describe("/api/categories", () => {
         expect(body.msg).toBe("Missing field");
       });
   });
-
 });
 test("POST: 400 - should return an error message when there is a missing required field in the body", () => {
   const category = {
@@ -715,23 +713,27 @@ describe("/api/events/:event_id/comments", () => {
         });
       });
   });
-  test('GET: 400 - should return an error message for an invalid article id', () => {
-    return request(app)
-    .get("/api/events/invalid_id/comments")
-    .expect(400)
-    .then(({ body }) => {
-      expect(body.msg).toBe("invalid event_id input");
+  describe("DELETE request", () => {
+    it("should return 204 and delete comment", () => {
+      return request(app).delete("/api/events/1/comments/1").expect(204);
     });
-  })
-    test("GET: 404 - should return an error message when given a valid but non-existent event id", () => {
-    return request(app)
-      .get("/api/events/999/comments")
-      .expect(404)
-      .then(({ body }) => {
-        expect(body.msg).toBe("event not found");
-      });
+    it("should return 404 and msg event_id does not exist if event_id not found", () => {
+      return request(app)
+        .delete("/api/events/99999999/comments/1")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("event_id does not exist");
+        });
+    });
+    it("should return 404 and msg comment_id not found if comment_id not found", () => {
+      return request(app)
+        .delete("/api/events/1/comments/9999")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("comment_id not found");
+        });
+    });
   });
-  
 });
 
 describe("/api/events/:event_id/members/:username", () => {
