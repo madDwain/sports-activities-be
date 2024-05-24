@@ -146,6 +146,29 @@
       { "username": "cronaldo", "event_id": 3, "is_accepted": "true" }
     ]
   },
+  "POST /api/events/:event_id/members/:username": {
+    "description": "returns 201 and object with is_accepted = pending",
+    "queries": [],
+    "exampleResponse": {
+      "username": "cronaldo",
+      "event_id": 1,
+      "is_accepted": "pending"
+    }
+  },
+  "PATCH /api/events/:event_id/members/:username": {
+    "description": "accepts object with is_accepted:true, returns 200 and object with is_accepted = true",
+    "queries": [],
+    "exampleResponse": {
+      "username": "dodgeball_king",
+      "event_id": 2,
+      "is_accepted": "true"
+    }
+  },
+  "DELETE /api/events/:event_id/members/:username": {
+    "description": "returns 204 and deletes given event",
+    "queries": [],
+    "exampleResponse": {}
+  },
   "POST /api/categories": {
     "description": "returns 201, accepts a category object with name and description. Serves the added category object.",
     "queries": [],
