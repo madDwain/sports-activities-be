@@ -74,8 +74,6 @@ module.exports = {
   getAllEvents,
   getEventByID,
   getEventMembers,
-
-  getUser
-
+  getUser,
   getEndpoints,
 };
