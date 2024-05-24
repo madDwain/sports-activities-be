@@ -1,38 +1,72 @@
 module.exports = [
   {
-    username: 'tickle122',
-    name: 'Tom Tickle',
+    username: 'dodgeball_queen',
+    first_name: 'Sarah',
+    last_name: 'Bloggs',
     avatar_url:
-      'https://vignette.wikia.nocookie.net/mrmen/images/d/d6/Mr-Tickle-9a.png/revision/latest?cb=20180127221953'
+      'https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg',
+    age: 49,
+    interests:'I enjoy playing dodgeball and basketball'
   },
   {
-    username: 'grumpy19',
-    name: 'Paul Grump',
+    username: 'dodgeball_king',
+    first_name: 'Joe',
+    last_name: 'Bloggs',
     avatar_url:
-      'https://vignette.wikia.nocookie.net/mrmen/images/7/78/Mr-Grumpy-3A.PNG/revision/latest?cb=20170707233013'
+      'https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg',
+    age: 12,
+    interests:'I enjoy playing dodgeball and basketball'
   },
   {
-    username: 'happyamy2016',
-    name: 'Amy Happy',
-    avatar_url:
-      'https://vignette1.wikia.nocookie.net/mrmen/images/7/7f/Mr_Happy.jpg/revision/latest?cb=20140102171729'
+    username: 'DaddyDwain',
+    first_name: 'Dwain',
+    last_name: 'Madolid',
+    avatar_url: 'https://avatars2.githubusercontent.com/u/24604688?s=460&v=4',
+    age: 22,
+    interests:'I enjoy playing basketball and badminton'
   },
   {
-    username: 'cooljmessy',
-    name: 'Peter Messy',
-    avatar_url:
-      'https://vignette.wikia.nocookie.net/mrmen/images/1/1a/MR_MESSY_4A.jpg/revision/latest/scale-to-width-down/250?cb=20170730171002'
+    username: 'cronaldo',
+    first_name: 'Alan',
+    last_name: 'Knobs',
+    avatar_url: 'https://avatars2.githubusercontent.com/u/24394918?s=400&v=4',
+    age: 36,
+    interests:'I enjoy playing football'
   },
   {
-    username: 'weegembump',
-    name: 'Gemma Bump',
+    username: 'federer',
+    first_name: 'Samuel',
+    last_name: 'Baker',
     avatar_url:
-      'https://vignette.wikia.nocookie.net/mrmen/images/7/7e/MrMen-Bump.png/revision/latest?cb=20180123225553'
+      'https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png',
+    age: 22,
+    interests:'I enjoy playing badminton and tennis'
   },
   {
-    username: 'jessjelly',
-    name: 'Jess Jelly',
+    username: 'twoods',
+    first_name: 'Thomas',
+    last_name: 'Woody',
     avatar_url:
-      'https://vignette.wikia.nocookie.net/mrmen/images/4/4f/MR_JELLY_4A.jpg/revision/latest?cb=20180104121141'
+      'https://avatars2.githubusercontent.com/u/24604688?s=460&v=4',
+    age: 30,
+    interests:'I enjoy playing golf'
+  },
+  {
+    username: 'dmomah63',
+    first_name: 'Danny',
+    last_name: 'Momes',
+    avatar_url:
+      'https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png',
+    age: 23,
+    interests:'I enjoy playing basketball and football'
+  },
+  {
+    username: 'lebonbon',
+    first_name: 'Elden',
+    last_name: 'Madolid',
+    avatar_url:
+      'https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png',
+    age: 26,
+    interests:'I enjoy playing basketball and volleyball'
   }
 ];

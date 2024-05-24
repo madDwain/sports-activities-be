@@ -650,7 +650,7 @@ describe("/api/events/:event_id", () => {
 
 describe("/api/events/:event_id/members/:username", () => {
   describe("POST request", () => {
-    it("returns 201 and object with is_accpted = pending", () => {
+    it("returns 201 and object with is_accepted = pending", () => {
       return request(app)
         .post("/api/events/1/members/cronaldo")
         .expect(201)
