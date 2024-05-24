@@ -52,4 +52,8 @@ function postMember(req, res, next) {
     });
 }
 
+
+
+
 module.exports = { postUser, postEvent, postCategory, postMember };
+

@@ -514,6 +514,15 @@ describe("/api/events/:event_id", () => {
           expect(body.msg).toBe("event_id is not found");
         });
     });
+    it("should return 400 and a message: invalid event id input if invalid event id input", () => {
+      return request(app)
+        .get("/api/events/notgood")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("invalid event_id input");
+
+        });
+    });
   });
   it("should return 404 and a message: invalid event id input if invalid event id input", () => {
     return request(app)
@@ -612,6 +621,20 @@ describe("/api/categories", () => {
       };
     });
   });
+
+  test("POST: 400 - should return an error message when there is a missing required field in the body", () => {
+    const category = {
+      name: "cricket",
+    };
+    return request(app)
+      .post("/api/categories")
+      .send(category)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Missing field");
+      });
+  });
+
 });
 test("POST: 400 - should return an error message when there is a missing required field in the body", () => {
   const category = {
@@ -647,6 +670,52 @@ describe("/api/events/:event_id", () => {
       });
   });
 });
+
+describe("/api/users/:username", () => {
+  test("GET: 200 - should return a user by username", () => {
+    return request(app)
+      .get("/api/users/cronaldo")
+      .expect(200)
+      .then(({ body }) => {
+        const user = body.user;
+        expect(user).toMatchObject({
+          username: "cronaldo",
+          first_name: "Alan",
+          last_name: "Knobs",
+          avatar_url:
+            "https://avatars2.githubusercontent.com/u/24394918?s=400&v=4",
+          age: 36,
+          interests: "I enjoy playing football",
+        });
+      });
+  });
+  test("GET: 404 - sends an appropriate status and error mesage when given a non-existent user", () => {
+    return request(app)
+      .get("/api/users/non-existent")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("User not found");
+      });
+  });
+});
+
+// describe("/api/events/:event_id/comments", () => {
+//   test("GET: 200 - should return all the comments for a given event", () => {
+//     return request(app)
+//       .get("/api/events/1/comments")
+//       .expect(200)
+//       .then(({ body }) => {
+//         const comments = body.comments;
+//         expect(comments.length).toBe(2);
+//         comments.map((comment) => {
+//           expect(typeof comment.body).toBe("string");
+//           expect(typeof comment.username).toBe("string");
+//           expect(typeof comment.event_id).toBe("number");
+//           expect(typeof comment.date).toBe("string");
+//         });
+//       });
+//   });
+// });
 
 describe("/api/events/:event_id/members/:username", () => {
   describe("POST request", () => {

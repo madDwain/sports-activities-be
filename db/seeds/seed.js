@@ -1,14 +1,16 @@
 const format = require("pg-format");
 const db = require("../connection");
-const { eventData, categoryData, membersData } = require("../data/test-data");
+const { eventData, categoryData, membersData, commentsData } = require("../data/test-data");
 const { formatEvents, createRef } = require("./utils");
 
-const seed = ({ userData, eventData, membersData }) => {
-  return db
+const seed = ({ userData, eventData, membersData, commentsData }) => {
+  return db.query(`DROP TABLE IF EXISTS comments`).then(() => {
+    return db
     .query(`DROP TABLE IF EXISTS members`)
     .then(() => {
       return db.query(`DROP TABLE IF EXISTS events;`);
     })
+  })
     .then(() => {
       return db.query(`DROP TABLE IF EXISTS users;`);
     })
@@ -63,6 +65,8 @@ const seed = ({ userData, eventData, membersData }) => {
         is_accepted VARCHAR NOT NULL 
       );
       `);
+    }).then(() => {
+      return db.query(`CREATE TABLE comments (body VARCHAR, username VARCHAR REFERENCES users(username), event_id INT REFERENCES events(event_id), date TIMESTAMP DEFAULT NOW());`)
     })
     .then(() => {
       const insertUsersQueryStr = format(
@@ -121,7 +125,12 @@ const seed = ({ userData, eventData, membersData }) => {
       );
 
       return db.query(insertMembersQueryStr)
-    });
+    }).then(() => {
+      const insertCommentsQueryStr = format(
+        `INSERT INTO comments (body, username, event_id, date) VALUES %L;`, commentsData.map(({ body, username, event_id, date}) => [body, username, event_id, date])
+      )
+      return db.query(insertCommentsQueryStr)
+    })
 };
 
 module.exports = seed;

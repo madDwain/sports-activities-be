@@ -6,9 +6,7 @@ function deleteUser(req, res, next) {
   const { username } = req.params;
   deleteUserData(username).then(() => {
     res.sendStatus(204);
-  }).catch((err) => {
-    next(err)
-  })
+  }).catch(next)
 }
 
 function deleteEventByID(req, res, next) {

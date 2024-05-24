@@ -1,4 +1,5 @@
 const db = require("../db/connection");
+const { checkUserExists } = require("../db/seeds/utils");
 
 function fetchUsers() {
   return db.query("SELECT * FROM users;").then(({ rows }) => {
@@ -118,23 +119,53 @@ function deleteUserData(username) {
     REFERENCES events(event_id)
     ON DELETE CASCADE;`
       );
+    }).then(() => {
+      return db.query("ALTER TABLE comments DROP CONSTRAINT comments_event_id_fkey;").then(() => {
+        return db.query(
+          `ALTER TABLE comments
+      ADD CONSTRAINT comments_event_id_fkey
+      FOREIGN KEY (event_id)
+      REFERENCES events(event_id)
+      ON DELETE CASCADE;`)
+      })
     })
     .then(() => {
       return db.query("DELETE FROM members WHERE username=$1 RETURNING *;", [
         username,
-      ]);
-    })
-    .then(({ rows }) => {
-      return db.query("DELETE FROM events WHERE host=$1", [username]);
-    })
+      ])
     .then(() => {
       return db
-        .query("DELETE FROM users WHERE username=$1 RETURNING *", [username])
-        .then((user) => {
-          if (user.rows.length === 0) {
-            return Promise.reject({ status: 404, msg: "User not found" });
-          }
+        .query(`DELETE FROM comments WHERE username=$1 RETURNING*`, [username])
+        .then(({ rows }) => {
+          return db
+            .query("DELETE FROM events WHERE host=$1", [username])
+            .then(() => {
+              return db
+                .query("DELETE FROM users WHERE username=$1 RETURNING *", [
+                  username,
+                ])
+                .then((user) => {
+                  if (user.rows.length === 0) {
+                    return Promise.reject({
+                      status: 404,
+                      msg: "User not found",
+                    });
+                  }
+                });
+            });
         });
+    });
+  })
+}
+
+function getUserData(username) {
+  return db
+    .query("SELECT * FROM users WHERE username=$1", [username])
+    .then((user) => {
+      if (user.rows.length === 0) {
+        return Promise.reject({ status: 404, msg: "User not found" });
+      }
+      return user.rows[0];
     });
 }
 
@@ -143,4 +174,5 @@ module.exports = {
   insertUser,
   patchUserData,
   deleteUserData,
+  getUserData,
 };
