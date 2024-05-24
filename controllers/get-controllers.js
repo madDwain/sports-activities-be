@@ -64,7 +64,6 @@ function getEventMembers(req, res, next) {
 
 function getUser(req, res, next) {
   const {username} = req.params
-  console.log(username)
   getUserData(username).then((user)=> {
     res.status(200).send({user})
   }).catch(next)
@@ -72,8 +71,6 @@ function getUser(req, res, next) {
 
 function getAllComments(req, res, next) {
   const { event_id } = req.params;
-  console.log(req.params)
-  console.log(event_id)
   getCommentsData(event_id)
     .then((comments) => {
       res.status(200).send({ comments });
