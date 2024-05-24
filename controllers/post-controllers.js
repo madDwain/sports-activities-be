@@ -33,4 +33,5 @@ function postCategory(req, res, next) {
   }).catch(next)
 }
 
+
 module.exports = { postUser, postEvent, postCategory };

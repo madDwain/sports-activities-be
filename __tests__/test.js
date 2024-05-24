@@ -497,20 +497,20 @@ describe("/api/events/:event_id", () => {
           });
         });
     });
-    it("should return 404 and a message: article_id not found if article_id is not found", () => {
+    it("should return 404 and a message: event_id not found if event_id is not found", () => {
       return request(app)
         .get("/api/events/999999999")
         .expect(404)
         .then(({ body }) => {
-          expect(body.msg).toBe("article_id is not found");
+          expect(body.msg).toBe("event_id is not found");
         });
     });
-    it("should return 404 and a message: invalid article_id input if invalid article_id input", () => {
+    it("should return 404 and a message: invalid event_id input if invalid article_id input", () => {
       return request(app)
         .get("/api/events/notgood")
         .expect(400)
         .then(({ body }) => {
-          expect(body.msg).toBe("invalid article_id input");
+          expect(body.msg).toBe("invalid event_id input");
         });
     });
   });
@@ -556,4 +556,21 @@ describe('/api/categories', () => {
       expect(body.msg).toBe("Missing field")
       })
   })
+})
+
+describe('/api/events/:event_id', () => {
+  test('DELETE: 204 - should delete an event by event id', () => {
+    return request(app).delete("/api/events/1").expect(204)
+  })
+  test('DELETE: 404 - should return a message when we delete an event by a valid but non-existent event id', () => {
+    return request(app).delete("/api/events/9999").expect(404).then(({body}) => {
+      expect(body.msg).toBe("Event not found")
+    })
+  })
+  test('DELETE: 400 - should return a message when we delete an event by an invalid event id', () => {
+    return request(app).delete("/api/events/invalid_id").expect(400).then(({body}) => {
+      expect(body.msg).toBe("invalid event_id input")
+    })
+  })
+  
 })
