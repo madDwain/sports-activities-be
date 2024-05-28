@@ -40,6 +40,20 @@
       }
     }
   },
+  "GET /api/users/:username": {
+    "description": "returns 200 and serves a user object",
+    "queries": [],
+    "exampleResponse": {
+      "users": {
+        "username": "cronaldo",
+        "first_name": "Alan",
+        "last_name": "Knobs",
+        "avatar_url": "https://avatars2.githubusercontent.com/u/24394918?s=400&v=4",
+        "age": 36,
+        "interests": "I enjoy playing football"
+      }
+    }
+  },
   "PATCH /api/users/:username": {
     "description": "accepts an object with key to be patched and value, returns 200 serves patched user object",
     "queries": [],
@@ -135,6 +149,11 @@
       }
     }
   },
+  "DELETE /api/events/:event_id": {
+    "description": "returns 204 deletes given username",
+    "queries": [],
+    "exampleResponse": {}
+  },
   "GET /api/events/:event_id/members": {
     "description": "returns 200 and an array of objects which say which user is enrolled in what event_id",
     "queries": ["is_accepted"],
@@ -180,5 +199,41 @@
       "name": "cricket",
       "description": "hitting the ball with the bat"
     }
+  },
+  "GET /api/events/:event_id/comments": {
+    "description": "returns 200 and an array of objects which say which user is enrolled in what event_id",
+    "queries": ["is_accepted"],
+    "exampleResponse": [
+      {
+        "body": "Itaque quisquam est similique et est perspiciatis reprehenderit voluptatem autem. Voluptatem accusantium eius error adipisci quibusdam doloribus.",
+        "username": "dodgeball_queen",
+        "event_id": 1,
+        "date": "10/10/24 16:00"
+      },
+      {
+        "body": "Itaque quisquam est similique et est perspiciatis reprehenderit voluptatem autem. Voluptatem accusantium eius error adipisci quibusdam doloribus.",
+        "username": "federer",
+        "event_id": 4,
+        "date": "10/11/24 12:00"
+      }
+    ]
+  },
+  "POST /api/events/:event_id/comments": {
+    "description": "returns 201, accepts a comments object with username and body. Serves the added category object.",
+    "queries": [],
+    "receieves": {
+      "username": "cronaldo",
+      "body": "Is the equipment included?"
+    },
+    "exampleResponse": {
+      "username": "cronaldo",
+      "body": "Is the equipment included?",
+      "event_id": 2
+    }
+  },
+  "DELETE /api/events/:event_id/comments/:comment_id": {
+    "description": "returns 204 and deletes given comment",
+    "queries": [],
+    "exampleResponse": {}
   }
 }
