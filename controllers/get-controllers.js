@@ -1,7 +1,8 @@
 const { fetchUsers, getUserData} = require("../models/users-models");
 const { fetchEvents, fetchEventByID } = require("../models/events-models");
 const { fetchMembersByEventID } = require("../models/members-models");
-const {getCommentsData} = require("../models/comments-models")
+const { getCommentsData } = require("../models/comments-models")
+const { fetchCategories } = require('../models/categories-models')
 const { checkEventIDExists } = require("../db/seeds/utils");
 
 function getEndpoints(req, res, next) {
@@ -78,6 +79,12 @@ function getAllComments(req, res, next) {
     .catch(next);
 }
 
+function getAllCategories(req, res, next) {
+  return fetchCategories().then((categories) => {
+    res.status(200).send({ categories })
+  })
+}
+
 module.exports = {
   getAllUsers,
   getAllEvents,
@@ -85,5 +92,6 @@ module.exports = {
   getEventMembers,
   getUser,
   getEndpoints,
-  getAllComments
+  getAllComments,
+  getAllCategories
 };

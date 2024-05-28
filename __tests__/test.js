@@ -620,6 +620,20 @@ describe("/api/categories", () => {
       };
     });
   });
+  describe("GET request", () => {
+    it("responds 200 and an array of category objects", () => {
+      return request(app)
+        .get("/api/categories")
+        .expect(200)
+        .then(({ body }) => {
+          const { categories } = body
+          categories.forEach((category) => {
+            expect(category).toHaveProperty('name')
+            expect(category).toHaveProperty('description')
+          })
+        });
+    });
+  });
 
   test("POST: 400 - should return an error message when there is a missing required field in the body", () => {
     const category = {
@@ -871,5 +885,3 @@ describe("/api/events/:event_id/comments", () => {
       });
   });
 });
-
-

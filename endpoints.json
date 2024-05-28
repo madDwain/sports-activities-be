@@ -188,6 +188,19 @@
     "queries": [],
     "exampleResponse": {}
   },
+  "GET /api/categories": {
+    "description": "returns 200 and an array of category objects",
+    "queries": [],
+    "exampleResponse": [
+      { "name": "basketball", "description": "shooting hoops" },
+      { "name": "football", "description": "kicking a ball" },
+      { "name": "dodgeball", "description": "hitting someone with the ball" },
+      {
+        "name": "badminton",
+        "description": "hitting a shuttlecock with a racket"
+      }
+    ]
+  },
   "POST /api/categories": {
     "description": "returns 201, accepts a category object with name and description. Serves the added category object.",
     "queries": [],
