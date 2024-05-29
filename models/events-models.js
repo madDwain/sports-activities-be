@@ -90,7 +90,6 @@ function fetchEventByID(event_id) {
 }
 
 function deleteEventByIDData(event_id) {
-
   return db
     .query(`DELETE FROM members WHERE event_id=$1 RETURNING *`, [event_id])
     .then(() => {
@@ -108,14 +107,45 @@ function deleteEventByIDData(event_id) {
             });
         });
     });
-
 }
 
+function fetchEventsByUsername(username, is_accepted) {
+  const validSorts = ['true', 'pending']
 
+let sqlQuery = `SELECT event_id FROM members WHERE username = $1`
+
+if (is_accepted && validSorts.includes(is_accepted)) {
+  sqlQuery += ` AND is_accepted = '${is_accepted}'`
+}
+
+sqlQuery += `;`
+
+  return db
+    .query(sqlQuery, [username])
+    .then(({ rows }) => {
+      if (rows.length === 0) {
+        return Promise.reject({status:404, msg: 'username not found'})
+      }
+      const event_id_array = rows
+        .map((object) => {
+          return db
+            .query(`SELECT * FROM events WHERE event_id = $1;`, [
+              object.event_id,
+            ])
+            .then(({ rows }) => {
+              return rows[0];
+            });
+        })
+        return Promise.all(event_id_array).then((resolvedArray) => {
+          return resolvedArray
+        })
+      })
+}
 
 module.exports = {
   fetchEvents,
   insertEvent,
   fetchEventByID,
   deleteEventByIDData,
+  fetchEventsByUsername,
 };

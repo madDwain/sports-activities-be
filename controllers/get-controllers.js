@@ -1,8 +1,12 @@
-const { fetchUsers, getUserData} = require("../models/users-models");
-const { fetchEvents, fetchEventByID } = require("../models/events-models");
+const { fetchUsers, getUserData } = require("../models/users-models");
+const {
+  fetchEvents,
+  fetchEventByID,
+  fetchEventsByUsername,
+} = require("../models/events-models");
 const { fetchMembersByEventID } = require("../models/members-models");
-const { getCommentsData } = require("../models/comments-models")
-const { fetchCategories } = require('../models/categories-models')
+const { getCommentsData } = require("../models/comments-models");
+const { fetchCategories } = require("../models/categories-models");
 const { checkEventIDExists } = require("../db/seeds/utils");
 
 function getEndpoints(req, res, next) {
@@ -64,10 +68,12 @@ function getEventMembers(req, res, next) {
 }
 
 function getUser(req, res, next) {
-  const {username} = req.params
-  getUserData(username).then((user)=> {
-    res.status(200).send({user})
-  }).catch(next)
+  const { username } = req.params;
+  getUserData(username)
+    .then((user) => {
+      res.status(200).send({ user });
+    })
+    .catch(next);
 }
 
 function getAllComments(req, res, next) {
@@ -81,8 +87,20 @@ function getAllComments(req, res, next) {
 
 function getAllCategories(req, res, next) {
   return fetchCategories().then((categories) => {
-    res.status(200).send({ categories })
-  })
+    res.status(200).send({ categories });
+  });
+}
+
+function getUsernameEvents(req, res, next) {
+  const { username } = req.params;
+  const { is_accepted } = req.query;
+  return fetchEventsByUsername(username, is_accepted)
+    .then((events) => {
+      res.status(200).send({ events });
+    })
+    .catch((err) => {
+      next(err);
+    });
 }
 
 module.exports = {
@@ -93,5 +111,6 @@ module.exports = {
   getUser,
   getEndpoints,
   getAllComments,
-  getAllCategories
+  getAllCategories,
+  getUsernameEvents,
 };

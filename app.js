@@ -5,16 +5,16 @@ const {getEndpoints} = require('./controllers/get-controllers')
 const eventRoute = require("./routes/events");
 const userRoute = require("./routes/users");
 const categoriesRoute = require("./routes/categories")
+const memberRoute = require("./routes/members")
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
 app.use("/api/users", userRoute);
-
 app.use("/api/categories", categoriesRoute)
-
 app.use("/api/events", eventRoute);
+app.use("/api/members", memberRoute)
 
 
 app.get("/api", getEndpoints)
