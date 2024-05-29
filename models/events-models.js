@@ -1,5 +1,8 @@
 const db = require("../db/connection");
-const { checkCategoryExists } = require("../db/seeds/utils");
+const {
+  checkCategoryExists,
+  checkUsernameExists,
+} = require("../db/seeds/utils");
 
 function fetchEvents(sortBy = "date", orderBy = "ASC", category, skill_level) {
   const validSorts = [
@@ -110,36 +113,39 @@ function deleteEventByIDData(event_id) {
 }
 
 function fetchEventsByUsername(username, is_accepted) {
-  const validSorts = ['true', 'pending']
+  const validSorts = ["true", "pending"];
 
-let sqlQuery = `SELECT event_id FROM members WHERE username = $1`
+  let sqlQuery = `SELECT event_id FROM members WHERE username = $1`;
 
-if (is_accepted && validSorts.includes(is_accepted)) {
-  sqlQuery += ` AND is_accepted = '${is_accepted}'`
+  if (is_accepted && validSorts.includes(is_accepted)) {
+    sqlQuery += ` AND is_accepted = '${is_accepted}'`;
+  }
+
+  sqlQuery += `;`;
+  return checkUsernameExists(username).then(() => {
+    return db.query(sqlQuery, [username]).then(({ rows }) => {
+      const event_id_array = rows.map((object) => {
+        return db
+          .query(`SELECT * FROM events WHERE event_id = $1;`, [object.event_id])
+          .then(({ rows }) => {
+            return rows[0];
+          });
+      });
+      return Promise.all(event_id_array).then((resolvedArray) => {
+        return resolvedArray;
+      });
+    });
+  });
 }
 
-sqlQuery += `;`
-
-  return db
-    .query(sqlQuery, [username])
-    .then(({ rows }) => {
-      if (rows.length === 0) {
-        return Promise.reject({status:404, msg: 'username not found'})
-      }
-      const event_id_array = rows
-        .map((object) => {
-          return db
-            .query(`SELECT * FROM events WHERE event_id = $1;`, [
-              object.event_id,
-            ])
-            .then(({ rows }) => {
-              return rows[0];
-            });
-        })
-        return Promise.all(event_id_array).then((resolvedArray) => {
-          return resolvedArray
-        })
-      })
+function fetchEventsByHost(host) {
+  return checkUsernameExists(host).then(() => {
+    return db
+      .query(`SELECT * FROM events WHERE host = $1;`, [host])
+      .then(({ rows }) => {
+        return rows;
+      });
+  });
 }
 
 module.exports = {
@@ -148,4 +154,5 @@ module.exports = {
   fetchEventByID,
   deleteEventByIDData,
   fetchEventsByUsername,
+  fetchEventsByHost,
 };

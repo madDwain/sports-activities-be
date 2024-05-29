@@ -290,5 +290,23 @@
         "skill_level": "beginner"
       }
     ]
+  },
+  "GET /api/events/host/:username": {
+    "description": "returns 200 and an array of event objects which the user is a host of",
+    "queries": [],
+    "exampleResponse": [
+      {
+        "event_name": "My cool basketball scrimmage",
+        "event_id": 1,
+        "host": "DaddyDwain",
+        "location": "London",
+        "date": "2024-12-12T18:00:00.000Z",
+        "category": "basketball",
+        "age_range": "18+",
+        "price": 6,
+        "capacity": 12,
+        "skill_level": "intermediate"
+      }
+    ]
   }
 }

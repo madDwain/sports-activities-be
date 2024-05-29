@@ -998,8 +998,46 @@ describe("/api/members/:username", () => {
         .get("/api/members/notauser")
         .expect(404)
         .then(({ body }) => {
-          expect(body.msg).toBe('username not found')
+          expect(body.msg).toBe("username does not exist");
         });
     });
+  });
+});
+
+describe("/api/events/host/:username", () => {
+  describe("GET request", () => {
+    it("should return 200 and an array of the events that the given user is a host for", () => {
+      return request(app)
+        .get("/api/events/host/DaddyDwain")
+        .expect(200)
+        .then(({ body }) => {
+          const { events } = body;
+          events.forEach((event) => {
+            expect(event.host).toBe("DaddyDwain");
+          });
+        });
+    });
+    it("should return 200 and an array of the events that the given user is a host for", () => {
+      return request(app)
+        .get("/api/events/host/cronaldo")
+        .expect(200)
+        .then(({ body }) => {
+          const { events } = body;
+          events.forEach((event) => {
+            expect(event.host).toBe("cronaldo");
+          });
+        });
+    });
+    it("should return 200 an empty array if the user is not a host of any events" , () => {
+      return request(app).get('/api/events/host/dodgeball_queen').expect(200).then(({ body }) => {
+        const { events } = body;
+        expect(events).toEqual([])
+      })
+    })
+    it("should return 404 : username not found if the username is not a user", () => {
+      return request(app).get('/api/events/host/notauser').expect(404).then(({ body }) => {
+        expect(body.msg).toBe('username does not exist')
+      })
+    })
   });
 });

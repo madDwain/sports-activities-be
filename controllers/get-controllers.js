@@ -3,6 +3,7 @@ const {
   fetchEvents,
   fetchEventByID,
   fetchEventsByUsername,
+  fetchEventsByHost,
 } = require("../models/events-models");
 const { fetchMembersByEventID } = require("../models/members-models");
 const { getCommentsData } = require("../models/comments-models");
@@ -103,6 +104,17 @@ function getUsernameEvents(req, res, next) {
     });
 }
 
+function getEventsByHost(req, res, next) {
+  const { username } = req.params;
+  return fetchEventsByHost(username)
+    .then((events) => {
+      res.status(200).send({ events });
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
+
 module.exports = {
   getAllUsers,
   getAllEvents,
@@ -113,4 +125,5 @@ module.exports = {
   getAllComments,
   getAllCategories,
   getUsernameEvents,
+  getEventsByHost,
 };
