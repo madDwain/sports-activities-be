@@ -626,11 +626,11 @@ describe("/api/categories", () => {
         .get("/api/categories")
         .expect(200)
         .then(({ body }) => {
-          const { categories } = body
+          const { categories } = body;
           categories.forEach((category) => {
-            expect(category).toHaveProperty('name')
-            expect(category).toHaveProperty('description')
-          })
+            expect(category).toHaveProperty("name");
+            expect(category).toHaveProperty("description");
+          });
         });
     });
   });
@@ -883,5 +883,123 @@ describe("/api/events/:event_id/comments", () => {
       .then(({ body }) => {
         expect(body.msg).toBe("Not found");
       });
+  });
+});
+
+describe("/api/members/:username", () => {
+  describe("GET request", () => {
+    it("returns 200 - will return an array of events that the user is a part of, pending or confirmed", () => {
+      const expected = [
+        {
+          event_name: "My cool basketball scrimmage",
+          event_id: 1,
+          host: "DaddyDwain",
+          location: "London",
+          date: "2024-12-12T18:00:00.000Z",
+          category: "basketball",
+          age_range: "18+",
+          price: 6,
+          capacity: 12,
+          skill_level: "intermediate",
+        },
+        {
+          event_name: "Championship Final UEFA",
+          event_id: 3,
+          host: "cronaldo",
+          location: "London",
+          date: "2024-10-10T19:00:00.000Z",
+          category: "football",
+          age_range: "21+",
+          price: 4,
+          capacity: 22,
+          skill_level: "expert",
+        },
+        {
+          event_name: "My epic badminton match",
+          event_id: 4,
+          host: "federer",
+          location: "London",
+          date: "2024-11-11T12:00:00.000Z",
+          category: "badminton",
+          age_range: "21+",
+          price: 10,
+          capacity: 4,
+          skill_level: "beginner",
+        },
+      ];
+      return request(app)
+        .get("/api/members/DaddyDwain")
+        .expect(200)
+        .then(({ body }) => {
+          const { events } = body;
+          expect(events).toMatchObject(expected);
+        });
+    });
+    it("returns 200 - will return an array of events that the user is a part of and can be queried true", () => {
+      const expected = [
+        {
+          event_name: "My cool basketball scrimmage",
+          event_id: 1,
+          host: "DaddyDwain",
+          location: "London",
+          date: "2024-12-12T18:00:00.000Z",
+          category: "basketball",
+          age_range: "18+",
+          price: 6,
+          capacity: 12,
+          skill_level: "intermediate",
+        },
+        {
+          event_name: "Championship Final UEFA",
+          event_id: 3,
+          host: "cronaldo",
+          location: "London",
+          date: "2024-10-10T19:00:00.000Z",
+          category: "football",
+          age_range: "21+",
+          price: 4,
+          capacity: 22,
+          skill_level: "expert",
+        },
+      ];
+      return request(app)
+        .get("/api/members/DaddyDwain?is_accepted=true")
+        .expect(200)
+        .then(({ body }) => {
+          const { events } = body;
+          expect(events).toMatchObject(expected);
+        });
+    });
+    it("returns 200 - will return an array of events that the user is a part of and can be queried pending", () => {
+      const expected = [
+        {
+          event_name: "My epic badminton match",
+          event_id: 4,
+          host: "federer",
+          location: "London",
+          date: "2024-11-11T12:00:00.000Z",
+          category: "badminton",
+          age_range: "21+",
+          price: 10,
+          capacity: 4,
+          skill_level: "beginner",
+        },
+      ];
+      return request(app)
+        .get("/api/members/DaddyDwain?is_accepted=pending")
+        .expect(200)
+        .then(({ body }) => {
+          const { events } = body;
+          expect(events).toMatchObject(expected);
+        });
+    });
+    it("returns 404 is username not found", () => {
+      return request(app)
+        .get("/api/members/notauser")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe('username not found')
+        });
+    });
   });
 });

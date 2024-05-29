@@ -248,5 +248,47 @@
     "description": "returns 204 and deletes given comment",
     "queries": [],
     "exampleResponse": {}
+  },
+  "GET /api/members/:username": {
+    "description": "returns 200 and an array of event objects which the user is a part of, can be queried is_accpeted = true/pending",
+    "queries": ["is_accepted"],
+    "exampleResponse": [
+      {
+        "event_name": "My cool basketball scrimmage",
+        "event_id": 1,
+        "host": "DaddyDwain",
+        "location": "London",
+        "date": "2024-12-12T18:00:00.000Z",
+        "category": "basketball",
+        "age_range": "18+",
+        "price": 6,
+        "capacity": 12,
+        "skill_level": "intermediate"
+      },
+      {
+        "event_name": "Championship Final UEFA",
+        "event_id": 3,
+        "host": "cronaldo",
+        "location": "London",
+        "date": "2024-10-10T19:00:00.000Z",
+        "category": "football",
+        "age_range": "21+",
+        "price": 4,
+        "capacity": 22,
+        "skill_level": "expert"
+      },
+      {
+        "event_name": "My epic badminton match",
+        "event_id": 4,
+        "host": "federer",
+        "location": "London",
+        "date": "2024-11-11T12:00:00.000Z",
+        "category": "badminton",
+        "age_range": "21+",
+        "price": 10,
+        "capacity": 4,
+        "skill_level": "beginner"
+      }
+    ]
   }
 }

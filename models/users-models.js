@@ -1,5 +1,4 @@
 const db = require("../db/connection");
-const { checkUserExists } = require("../db/seeds/utils");
 
 function fetchUsers() {
   return db.query("SELECT * FROM users;").then(({ rows }) => {
