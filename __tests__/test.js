@@ -328,7 +328,6 @@ describe("/api/events", () => {
         .expect(200)
         .then(({ body }) => {
           const { events } = body;
-          console.log(events)
           expect(events).toBeSortedBy("age_range", { ascending: true });
         });
     });

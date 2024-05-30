@@ -58,7 +58,7 @@ const seed = ({ userData, eventData, membersData, commentsData }) => {
         category VARCHAR NOT NULL REFERENCES categories(name),
         age_range VARCHAR NOT NULL,
         price INT NOT NULL,
-        capacity INT NOT NULL,
+        capacity INT NOT NULL DEFAULT 999,
         skill_level VARCHAR NOT NULL,
         description VARCHAR
       );`);
@@ -111,7 +111,7 @@ const seed = ({ userData, eventData, membersData, commentsData }) => {
             price,
             capacity,
             skill_level,
-            description
+            description,
           }) => [
             event_name,
             event_id,
@@ -123,7 +123,7 @@ const seed = ({ userData, eventData, membersData, commentsData }) => {
             price,
             capacity,
             skill_level,
-            description
+            description,
           ]
         )
       );
