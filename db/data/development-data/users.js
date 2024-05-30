@@ -4,7 +4,7 @@ module.exports = [
     first_name: 'Sarah',
     last_name: 'Bloggs',
     avatar_url:
-      'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.vecteezy.com%2Ffree-vector%2Fwoman-avatar&psig=AOvVaw3aB6gOqwQIN4bCTcYP9Tvx&ust=1717152069742000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCJDa6IqYtYYDFQAAAAAdAAAAABAV',
+      'https://cdni.iconscout.com/illustration/premium/thumb/female-avatar-8187688-6590630.png',
     age: 49,
     interests:'I enjoy playing dodgeball and basketball'
   },
@@ -13,7 +13,7 @@ module.exports = [
     first_name: 'Joe',
     last_name: 'Bloggs',
     avatar_url:
-      'https://www.google.com/url?sa=i&url=https%3A%2F%2Fpngtree.com%2Fso%2Fmale-avatar&psig=AOvVaw3aB6gOqwQIN4bCTcYP9Tvx&ust=1717152069742000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCJDa6IqYtYYDFQAAAAAdAAAAABAh',
+      'https://www.w3schools.com/w3images/avatar2.png',
     age: 12,
     interests:'I enjoy playing dodgeball and basketball'
   },
