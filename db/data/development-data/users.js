@@ -4,7 +4,7 @@ module.exports = [
     first_name: 'Sarah',
     last_name: 'Bloggs',
     avatar_url:
-      'https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg',
+      'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.vecteezy.com%2Ffree-vector%2Fwoman-avatar&psig=AOvVaw3aB6gOqwQIN4bCTcYP9Tvx&ust=1717152069742000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCJDa6IqYtYYDFQAAAAAdAAAAABAV',
     age: 49,
     interests:'I enjoy playing dodgeball and basketball'
   },
@@ -13,7 +13,7 @@ module.exports = [
     first_name: 'Joe',
     last_name: 'Bloggs',
     avatar_url:
-      'https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg',
+      'https://www.google.com/url?sa=i&url=https%3A%2F%2Fpngtree.com%2Fso%2Fmale-avatar&psig=AOvVaw3aB6gOqwQIN4bCTcYP9Tvx&ust=1717152069742000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCJDa6IqYtYYDFQAAAAAdAAAAABAh',
     age: 12,
     interests:'I enjoy playing dodgeball and basketball'
   },
@@ -38,7 +38,7 @@ module.exports = [
     first_name: 'Samuel',
     last_name: 'Baker',
     avatar_url:
-      'https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png',
+      'https://img.freepik.com/premium-vector/avatar-icon002_750950-52.jpg',
     age: 22,
     interests:'I enjoy playing badminton and tennis'
   },
@@ -56,7 +56,7 @@ module.exports = [
     first_name: 'Danny',
     last_name: 'Momes',
     avatar_url:
-      'https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png',
+      'https://img.freepik.com/premium-vector/avatar-icon002_750950-52.jpg',
     age: 23,
     interests:'I enjoy playing basketball and football'
   },
@@ -65,7 +65,7 @@ module.exports = [
     first_name: 'Elden',
     last_name: 'Madolid',
     avatar_url:
-      'https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png',
+      'https://w7.pngwing.com/pngs/340/946/png-transparent-avatar-user-computer-icons-software-developer-avatar-child-face-heroes-thumbnail.png',
     age: 26,
     interests:'I enjoy playing basketball and volleyball'
   }
