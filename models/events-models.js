@@ -12,6 +12,7 @@ function fetchEvents(sortBy = "date", orderBy = "ASC", category, skill_level) {
     "date",
     "category",
     "skill_level",
+    "age_range"
   ];
   const validOrder = ["asc", "desc", "ASC", "DESC"];
   const validSkillLevels = ["all", "beginner", "intermediate", "expert"];

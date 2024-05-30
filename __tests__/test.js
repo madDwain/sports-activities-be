@@ -322,6 +322,16 @@ describe("/api/events", () => {
           expect(events).toBeSortedBy("date", { descending: true });
         });
     });
+    it("returns an array sorted by age range, default ascending", () => {
+      return request(app)
+        .get("/api/events?sort_by=age_range")
+        .expect(200)
+        .then(({ body }) => {
+          const { events } = body;
+          console.log(events)
+          expect(events).toBeSortedBy("age_range", { ascending: true });
+        });
+    });
     it("returns 400 if sort_by is not valid", () => {
       return request(app)
         .get("/api/events?sort_by=notvalid")
@@ -401,7 +411,8 @@ describe("/api/events", () => {
         price: 6,
         capacity: 12,
         skill_level: "expert",
-        description: "Come and play basketball with us, we are the best in the world!!"
+        description:
+          "Come and play basketball with us, we are the best in the world!!",
       };
       return request(app)
         .post("/api/events")
@@ -440,7 +451,8 @@ describe("/api/events", () => {
         price: 6,
         capacity: 12,
         skill_level: "expert",
-        description: "Come and play basketball with us, we are the best in the world!!"
+        description:
+          "Come and play basketball with us, we are the best in the world!!",
       };
       return request(app)
         .post("/api/events")
@@ -461,7 +473,8 @@ describe("/api/events", () => {
         price: 6,
         capacity: 12,
         skill_level: "expert",
-        description: "Come and play basketball with us, we are the best in the world!!",
+        description:
+          "Come and play basketball with us, we are the best in the world!!",
         pets: "dog",
       };
       return request(app)
@@ -506,7 +519,8 @@ describe("/api/events/:event_id", () => {
             price: 6,
             capacity: 12,
             skill_level: "intermediate",
-            description: "This is my basketball game with intermediate skill level, come and play with us!"
+            description:
+              "This is my basketball game with intermediate skill level, come and play with us!",
           });
         });
     });
@@ -1033,16 +1047,22 @@ describe("/api/events/host/:username", () => {
           });
         });
     });
-    it("should return 200 an empty array if the user is not a host of any events" , () => {
-      return request(app).get('/api/events/host/dodgeball_queen').expect(200).then(({ body }) => {
-        const { events } = body;
-        expect(events).toEqual([])
-      })
-    })
+    it("should return 200 an empty array if the user is not a host of any events", () => {
+      return request(app)
+        .get("/api/events/host/dodgeball_queen")
+        .expect(200)
+        .then(({ body }) => {
+          const { events } = body;
+          expect(events).toEqual([]);
+        });
+    });
     it("should return 404 : username not found if the username is not a user", () => {
-      return request(app).get('/api/events/host/notauser').expect(404).then(({ body }) => {
-        expect(body.msg).toBe('username does not exist')
-      })
-    })
+      return request(app)
+        .get("/api/events/host/notauser")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("username does not exist");
+        });
+    });
   });
 });

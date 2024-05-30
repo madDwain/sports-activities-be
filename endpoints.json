@@ -76,7 +76,7 @@
     "exampleResponse": {}
   },
   "GET /api/events": {
-    "description": "returns 200 and serves an array of event objects",
+    "description": "returns 200 and serves an array of event objects, can be sorted by price, date, capacity",
     "queries": ["sort_by", "order_by", "category", "skill_level"],
     "exampleResponse": [
       {
@@ -89,7 +89,8 @@
         "age_range": "18+",
         "price": 6,
         "capacity": 12,
-        "skill_level": "intermediate"
+        "skill_level": "intermediate",
+        "description": "Come and play basketball with us, we are the best in the world!!"
       },
       {
         "event_name": "The wicked dodgeball match",
@@ -101,7 +102,8 @@
         "age_range": "16-18",
         "price": 10,
         "capacity": 18,
-        "skill_level": "all"
+        "skill_level": "all",
+        "description": "Come and play dodgeball with us, we are the best in the world!!"
       }
     ]
   },
@@ -117,7 +119,8 @@
       "age_range": "18+",
       "price": 6,
       "capacity": 12,
-      "skill_level": "expert"
+      "skill_level": "expert",
+      "description": "Come and play basketball with us, we are the best in the world!!"
     },
     "exampleResponse": {
       "event_name": "My cool NEW basketball series",
@@ -128,7 +131,8 @@
       "age_range": "18+",
       "price": 6,
       "capacity": 12,
-      "skill_level": "expert"
+      "skill_level": "expert",
+      "description": "Come and play basketball with us, we are the best in the world!!"
     }
   },
   "GET /api/events/:event_id": {
