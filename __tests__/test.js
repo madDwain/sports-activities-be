@@ -401,6 +401,7 @@ describe("/api/events", () => {
         price: 6,
         capacity: 12,
         skill_level: "expert",
+        description: "Come and play basketball with us, we are the best in the world!!"
       };
       return request(app)
         .post("/api/events")
@@ -439,6 +440,7 @@ describe("/api/events", () => {
         price: 6,
         capacity: 12,
         skill_level: "expert",
+        description: "Come and play basketball with us, we are the best in the world!!"
       };
       return request(app)
         .post("/api/events")
@@ -459,6 +461,7 @@ describe("/api/events", () => {
         price: 6,
         capacity: 12,
         skill_level: "expert",
+        description: "Come and play basketball with us, we are the best in the world!!",
         pets: "dog",
       };
       return request(app)
@@ -477,7 +480,8 @@ describe("/api/events", () => {
           expect(event).toHaveProperty("price");
           expect(event).toHaveProperty("capacity");
           expect(event).toHaveProperty("skill_level");
-          expect(eventArray.length).toBe(10);
+          expect(event).toHaveProperty("description");
+          expect(eventArray.length).toBe(11);
         });
     });
   });
@@ -502,6 +506,7 @@ describe("/api/events/:event_id", () => {
             price: 6,
             capacity: 12,
             skill_level: "intermediate",
+            description: "This is my basketball game with intermediate skill level, come and play with us!"
           });
         });
     });

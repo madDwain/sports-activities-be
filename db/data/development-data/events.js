@@ -9,7 +9,8 @@ module.exports = [
     age_range: "18+",
     price: 6,
     capacity: 12,
-    skill_level: 'intermediate'
+    skill_level: 'intermediate',
+    description: "This is my basketball game with intermediate skill level, come and play with us!"
   },
   {
     event_name: "The wicked dodgeball match",
@@ -33,7 +34,8 @@ module.exports = [
     age_range: "21+",
     price: 4,
     capacity: 22,
-    skill_level: 'expert'
+    skill_level: 'expert',
+    description: 'Please come and play with us! Looking for advanced ballers.'
   },
   {
     event_name: "My epic badminton match",
@@ -45,7 +47,8 @@ module.exports = [
     age_range: "21+",
     price: 10,
     capacity: 4,
-    skill_level: 'beginner'
+    skill_level: 'beginner',
+    description: 'Everyone can play with us in our badminton match!'
   },
   {
     event_name: "My sick golf match",
@@ -53,11 +56,12 @@ module.exports = [
     host: "federer",
     location: "London",
     date: "5/6/24 12:00",
-    category: "badminton",
+    category: "golf",
     age_range: "21+",
     price: 7,
     capacity: 4,
-    skill_level: 'beginner'
+    skill_level: 'beginner',
+    description: 'Come and practice your golf skills with us!'
   },
   {
     event_name: "VolleyVolleyVolleyball",
@@ -65,10 +69,11 @@ module.exports = [
     host: "lebonbon",
     location: "London",
     date: "7/20/24 12:00",
-    category: "badminton",
+    category: "volleyball",
     age_range: "18+",
     price: 2,
     capacity: 8,
-    skill_level: 'intermediate'
+    skill_level: 'intermediate',
+    description: 'A friendly, competitive volleyball game.'
   },
 ];

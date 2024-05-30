@@ -59,7 +59,8 @@ const seed = ({ userData, eventData, membersData, commentsData }) => {
         age_range VARCHAR NOT NULL,
         price INT NOT NULL,
         capacity INT NOT NULL,
-        skill_level VARCHAR NOT NULL
+        skill_level VARCHAR NOT NULL,
+        description VARCHAR
       );`);
     })
     .then(() => {
@@ -97,7 +98,7 @@ const seed = ({ userData, eventData, membersData, commentsData }) => {
       const formattedEventData = formatEvents(eventData, usernameLookup);
 
       const insertEventsQuery = format(
-        `INSERT INTO events (event_name, event_id, host, location, date, category, age_range, price, capacity, skill_level) VALUES %L;`,
+        `INSERT INTO events (event_name, event_id, host, location, date, category, age_range, price, capacity, skill_level, description) VALUES %L;`,
         formattedEventData.map(
           ({
             event_name,
@@ -110,6 +111,7 @@ const seed = ({ userData, eventData, membersData, commentsData }) => {
             price,
             capacity,
             skill_level,
+            description
           }) => [
             event_name,
             event_id,
@@ -121,6 +123,7 @@ const seed = ({ userData, eventData, membersData, commentsData }) => {
             price,
             capacity,
             skill_level,
+            description
           ]
         )
       );

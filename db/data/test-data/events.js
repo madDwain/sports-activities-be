@@ -9,7 +9,8 @@ module.exports = [
     age_range: "18+",
     price: 6,
     capacity: 12,
-    skill_level: 'intermediate'
+    skill_level: 'intermediate',
+    description: 'This is my basketball game with intermediate skill level, come and play with us!'
   },
   {
     event_name: "The wicked dodgeball match",
@@ -33,7 +34,8 @@ module.exports = [
     age_range: "21+",
     price: 4,
     capacity: 22,
-    skill_level: 'expert'
+    skill_level: 'expert',
+    description: 'Please come and play with us! Looking for advanced ballers.'
   },
   {
     event_name: "My epic badminton match",
@@ -45,6 +47,7 @@ module.exports = [
     age_range: "21+",
     price: 10,
     capacity: 4,
-    skill_level: 'beginner'
+    skill_level: 'beginner',
+    description: 'Everyone can play with us in our badminton match!'
   },
 ];
