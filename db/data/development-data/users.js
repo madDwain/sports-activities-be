@@ -4,7 +4,7 @@ module.exports = [
     first_name: 'Sarah',
     last_name: 'Bloggs',
     avatar_url:
-      'https://cdni.iconscout.com/illustration/premium/thumb/female-avatar-8187688-6590630.png',
+    'https://cdni.iconscout.com/illustration/premium/thumb/female-avatar-8187688-6590630.png',
     age: 49,
     interests:'I enjoy playing dodgeball and basketball'
   },
@@ -38,7 +38,7 @@ module.exports = [
     first_name: 'Samuel',
     last_name: 'Baker',
     avatar_url:
-      'https://img.freepik.com/premium-vector/avatar-icon002_750950-52.jpg',
+    'https://img.freepik.com/premium-vector/avatar-icon002_750950-52.jpg',
     age: 22,
     interests:'I enjoy playing badminton and tennis'
   },
@@ -47,7 +47,7 @@ module.exports = [
     first_name: 'Thomas',
     last_name: 'Woody',
     avatar_url:
-      'https://avatars2.githubusercontent.com/u/24604688?s=460&v=4',
+    'https://avatars2.githubusercontent.com/u/24604688?s=460&v=4',
     age: 30,
     interests:'I enjoy playing golf'
   },
@@ -56,7 +56,7 @@ module.exports = [
     first_name: 'Danny',
     last_name: 'Momes',
     avatar_url:
-      'https://img.freepik.com/premium-vector/avatar-icon002_750950-52.jpg',
+    'https://img.freepik.com/premium-vector/avatar-icon002_750950-52.jpg',
     age: 23,
     interests:'I enjoy playing basketball and football'
   },
