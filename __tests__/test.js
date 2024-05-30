@@ -1077,12 +1077,20 @@ describe("/api/events/host/:username/requests", () => {
           });
         });
     });
-    it('should return 404 when username not found', () => {
+    it("should return 200 and an array of pending requests", () => {
+      return request(app)
+        .get("/api/events/host/DaddyDwain/requests")
+        .then(({ body }) => {
+          const [array] = body
+          expect(array).toEqual([]);
+        });
+    });
+    it("should return 404 when username not found", () => {
       return request(app)
         .get("/api/events/host/notauser/requests")
         .then(({ body }) => {
-          expect(body.msg).toBe('username does not exist')
+          expect(body.msg).toBe("username does not exist");
         });
     });
-    })
   });
+});

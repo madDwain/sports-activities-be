@@ -62,6 +62,9 @@ function fetchPendingRequests(event_ids) {
         [event_id]
       )
       .then(({ rows }) => {
+        if (rows.length === 0) {
+          return []
+        }
         return rows[0];
       });
   });
