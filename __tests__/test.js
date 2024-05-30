@@ -1065,3 +1065,24 @@ describe("/api/events/host/:username", () => {
     });
   });
 });
+
+describe("/api/events/host/:username/requests", () => {
+  describe("GET request", () => {
+    it("should return 200 and an array of pending requests", () => {
+      return request(app)
+        .get("/api/events/host/federer/requests")
+        .then(({ body }) => {
+          body.forEach((request) => {
+            expect(request.is_accepted).toBe("pending");
+          });
+        });
+    });
+    it('should return 404 when username not found', () => {
+      return request(app)
+        .get("/api/events/host/notauser/requests")
+        .then(({ body }) => {
+          expect(body.msg).toBe('username does not exist')
+        });
+    });
+    })
+  });

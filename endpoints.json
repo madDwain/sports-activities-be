@@ -312,5 +312,12 @@
         "skill_level": "intermediate"
       }
     ]
+  },
+  "GET /api/events/host/:username/requests": {
+    "description": "returns 200 and an array of requests that the user has receieved",
+    "queries": [],
+    "exampleResponse": [
+      { "username": "DaddyDwain", "event_id": 4, "is_accepted": "pending" }
+    ]
   }
 }

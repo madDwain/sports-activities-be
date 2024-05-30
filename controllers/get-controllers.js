@@ -5,7 +5,10 @@ const {
   fetchEventsByUsername,
   fetchEventsByHost,
 } = require("../models/events-models");
-const { fetchMembersByEventID } = require("../models/members-models");
+const {
+  fetchMembersByEventID,
+  fetchPendingRequests,
+} = require("../models/members-models");
 const { getCommentsData } = require("../models/comments-models");
 const { fetchCategories } = require("../models/categories-models");
 const { checkEventIDExists } = require("../db/seeds/utils");
@@ -115,6 +118,25 @@ function getEventsByHost(req, res, next) {
     });
 }
 
+async function getPendingRequests(req, res, next) {
+  const { username } = req.params;
+  return await fetchEventsByHost(username)
+    .then((events) => {
+      return events.map((event) => {
+        return event.event_id;
+      });
+    })
+    .then((event_ids) => {
+      return fetchPendingRequests(event_ids);
+    })
+    .then((body) => {
+      res.status(200).send(body);
+    })
+    .catch((err) => {
+      next(err)
+    });
+}
+
 module.exports = {
   getAllUsers,
   getAllEvents,
@@ -126,4 +148,5 @@ module.exports = {
   getAllCategories,
   getUsernameEvents,
   getEventsByHost,
+  getPendingRequests,
 };
